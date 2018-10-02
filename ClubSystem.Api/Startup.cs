@@ -28,7 +28,10 @@ namespace ClubSystem.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ClubSystemDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AzureStudentSqlServer")));
+                options.UseSqlServer(
+                        Configuration.GetConnectionString("AzureStudentSqlServer"),
+                        b => b.MigrationsAssembly("ClubSystem.Api")
+                    ));
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
