@@ -1,14 +1,12 @@
 ﻿using ClubSystem.Lib.Model.User;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ClubSystem.Lib.Interfaces
 {
-    interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<UserEntity>
     {
-        IEnumerable<User> GetAllUsers();
-        IEnumerable<User> GetAllUsersByClub();
-        User GetUser(int id);
+        IEnumerable<UserEntity> GetAllUsers();
+        IEnumerable<UserEntity> GetAllUsersByClub(int clubId);
+        UserEntity GetUser(int id);
     }
 }

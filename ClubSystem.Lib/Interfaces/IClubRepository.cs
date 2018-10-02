@@ -5,9 +5,9 @@ using System.Text;
 
 namespace ClubSystem.Lib.Interfaces
 {
-    interface IClubRepository : IRepository<Club>
+    public interface IClubRepository : IRepository<ClubEntity>
     {
-        IEnumerable<Club> GetAllClubs();
-        IEnumerable<Club> GetAllClubsByUser();
+        IEnumerable<ClubEntity> GetAllClubs();
+        IEnumerable<ClubEntity> GetAllClubsByUser();
     }
 }

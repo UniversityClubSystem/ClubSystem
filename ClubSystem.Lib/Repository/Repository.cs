@@ -8,49 +8,46 @@ namespace ClubSystem.Lib.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly ClubSystemDbContext _context;
-        public Repository(ClubSystemDbContext context)
+        protected readonly DbContext Context;
+        
+        public Repository(DbContext context)
         {
-            _context = context;
+            Context = context;
         }
 
-        protected void Save() => _context.SaveChanges();
-        public int Count(Func<T, bool> predicate)
+        public T Get(int id)
         {
-            return _context.Set<T>().Where(predicate).Count();
-        }
-
-        public void Create(T entity)
-        {
-            _context.Add(entity);
-            Save();
-        }
-
-        public void Delete(T entity)
-        {
-            _context.Remove(entity);
-            Save();
-        }
-
-        public IEnumerable<T> Find(Func<T, bool> predicate)
-        {
-            return _context.Set<T>().Where(predicate);
+            return Context.Set<T>().Find(id);
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>();
+            return Context.Set<T>().ToList();
         }
 
-        public T GetById(int id)
+        public IEnumerable<T> Find(Func<T, bool> predicate)
         {
-            return _context.Set<T>().Find(id);
+            return Context.Set<T>().Where(predicate);
         }
 
-        public void Update(T entitiy)
+        public void Add(T entity)
         {
-            _context.Entry(entitiy).State = EntityState.Modified;
-            Save();
+            Context.Set<T>().Add(entity);
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            Context.Set<T>().AddRange(entities);
+        }
+
+        public void Remove(T entity)
+        {
+            Context.Set<T>().Remove(entity);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            Context.Set<T>().RemoveRange(entities);
         }
     }
 }
