@@ -6,7 +6,7 @@ namespace ClubSystem.Lib.Model.Base
 {
     public class BaseModel
     {
-        public int Identifier { get; set; }
+        public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
     }
