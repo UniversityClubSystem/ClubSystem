@@ -8,6 +8,6 @@ namespace ClubSystem.Lib.Model.User
     public class UserEntity : BaseModel
     {
         public string Name { get; set; }
-        public ICollection<UserClubEntity> UserClubEntities { get; set; }
+        public virtual ICollection<UserClubEntity> UserClubEntities { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace ClubSystem.Lib.Model.Club
     {
         public string Name { get; set; }
         public string UniversityName { get; set; }
-        public ICollection<UserClubEntity> UserClubEntities { get; set; }
+        public virtual ICollection<UserClubEntity> UserClubEntities { get; set; }
         
         // TODO: public ICollection<UserEntity> Admins { get; set; }
     }
