@@ -5,12 +5,10 @@ using ClubSystem.Lib.Model.Base;
 namespace ClubSystem.Lib.Model.Club
 {
     [Table("Clubs")]
-    public class ClubEntity : BaseModel
+    public class Club : BaseModel
     {
         public string Name { get; set; }
         public string UniversityName { get; set; }
-        public virtual ICollection<UserClubEntity> UserClubEntities { get; set; }
-        
-        // TODO: public ICollection<UserEntity> Admins { get; set; }
+        public ICollection<UserClub> UserClubs { get; set; }
     }
 }

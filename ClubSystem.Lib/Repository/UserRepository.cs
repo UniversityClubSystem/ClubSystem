@@ -6,7 +6,7 @@ using ClubSystem.Lib.Model.User;
 
 namespace ClubSystem.Lib.Repository
 {
-    public class UserRepository : Repository<UserEntity>, IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly ClubSystemDbContext _context;
         
@@ -15,17 +15,17 @@ namespace ClubSystem.Lib.Repository
             _context = context;
         }
         
-        public IEnumerable<UserEntity> GetAllUsers()
+        public IEnumerable<User> GetAllUsers()
         {
-            return _context.Set<UserEntity>().ToList();
+            return _context.Set<User>().ToList();
         }
 
-        public IEnumerable<UserEntity> GetAllUsersByClub(int clubId)
+        public IEnumerable<User> GetAllUsersByClub(int clubId)
         {
             throw new NotImplementedException();
         }
 
-        public UserEntity GetUser(int id)
+        public User GetUser(int id)
         {
             throw new NotImplementedException();
         }

@@ -6,18 +6,18 @@ using System.Text;
 
 namespace ClubSystem.Lib.Repository
 {
-    public class ClubRepository : Repository<ClubEntity>, IClubRepository
+    public class ClubRepository : Repository<Club>, IClubRepository
     {
         public ClubRepository(ClubSystemDbContext context) : base(context)
         {
         }
 
-        public IEnumerable<ClubEntity> GetAllClubs()
+        public IEnumerable<Club> GetAllClubs()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ClubEntity> GetAllClubsByUser()
+        public IEnumerable<Club> GetAllClubsByUser()
         {
             throw new NotImplementedException();
         }

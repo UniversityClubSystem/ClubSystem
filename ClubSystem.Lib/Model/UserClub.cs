@@ -5,11 +5,11 @@ using ClubSystem.Lib.Model.User;
 namespace ClubSystem.Lib.Model
 {
     [Table("UserClubs")]
-    public class UserClubEntity
+    public class UserClub
     {
         public int UserId { get; set; }
-        public UserEntity User { get; set; }
+        public User.User User { get; set; }
         public int ClubId { get; set; }
-        public ClubEntity Club { get; set; }
+        public Club.Club Club { get; set; }
     }
 }

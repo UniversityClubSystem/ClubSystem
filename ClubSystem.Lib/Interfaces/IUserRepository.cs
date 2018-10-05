@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace ClubSystem.Lib.Interfaces
 {
-    public interface IUserRepository : IRepository<UserEntity>
+    public interface IUserRepository : IRepository<User>
     {
-        IEnumerable<UserEntity> GetAllUsers();
-        IEnumerable<UserEntity> GetAllUsersByClub(int clubId);
-        UserEntity GetUser(int id);
+        IEnumerable<User> GetAllUsers();
+        IEnumerable<User> GetAllUsersByClub(int clubId);
+        User GetUser(int id);
     }
 }
