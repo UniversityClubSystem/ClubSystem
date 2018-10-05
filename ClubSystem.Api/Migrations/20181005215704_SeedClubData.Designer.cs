@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    [Migration("20181003130913_SimpleSeed")]
-    partial class SimpleSeed
+    [Migration("20181005215704_SeedClubData")]
+    partial class SeedClubData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace ClubSystem.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.Club.ClubEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.Club.Club", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,11 +40,11 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("Clubs");
 
                     b.HasData(
-                        new { Id = 1, CreatedDate = new DateTime(2018, 10, 3, 16, 9, 13, 141, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 3, 16, 9, 13, 141, DateTimeKind.Local), Name = "Science Club", UniversityName = "London University" }
+                        new { Id = 1, CreatedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), Name = "Space Club", UniversityName = "London University" }
                     );
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.User.UserEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.User.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,11 +61,12 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = 1, CreatedDate = new DateTime(2018, 10, 3, 16, 9, 13, 137, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 3, 16, 9, 13, 140, DateTimeKind.Local), Name = "Ömrüm Baki Temiz" }
+                        new { Id = 1, CreatedDate = new DateTime(2018, 10, 6, 0, 57, 3, 367, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 57, 3, 369, DateTimeKind.Local), Name = "Ömrüm Baki Temiz" },
+                        new { Id = 2, CreatedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), Name = "admin" }
                     );
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.UserClubEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.UserClub", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -78,15 +79,15 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("UserClubs");
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.UserClubEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.UserClub", b =>
                 {
-                    b.HasOne("ClubSystem.Lib.Model.Club.ClubEntity", "Club")
-                        .WithMany("UserClubEntities")
+                    b.HasOne("ClubSystem.Lib.Model.Club.Club", "Club")
+                        .WithMany()
                         .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ClubSystem.Lib.Model.User.UserEntity", "User")
-                        .WithMany("UserClubEntities")
+                    b.HasOne("ClubSystem.Lib.Model.User.User", "User")
+                        .WithMany("UserClubs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

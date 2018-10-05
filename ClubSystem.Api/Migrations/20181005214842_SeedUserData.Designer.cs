@@ -4,14 +4,16 @@ using ClubSystem.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    partial class ClubSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181005214842_SeedUserData")]
+    partial class SeedUserData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,10 +38,6 @@ namespace ClubSystem.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clubs");
-
-                    b.HasData(
-                        new { Id = 1, CreatedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), Name = "Space Club", UniversityName = "London University" }
-                    );
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Model.User.User", b =>
@@ -59,8 +57,8 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = 1, CreatedDate = new DateTime(2018, 10, 6, 0, 57, 3, 367, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 57, 3, 369, DateTimeKind.Local), Name = "Ömrüm Baki Temiz" },
-                        new { Id = 2, CreatedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 57, 3, 370, DateTimeKind.Local), Name = "admin" }
+                        new { Id = 1, CreatedDate = new DateTime(2018, 10, 6, 0, 48, 42, 22, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 48, 42, 24, DateTimeKind.Local), Name = "Ömrüm Baki Temiz" },
+                        new { Id = 2, CreatedDate = new DateTime(2018, 10, 6, 0, 48, 42, 26, DateTimeKind.Local), LastModifiedDate = new DateTime(2018, 10, 6, 0, 48, 42, 26, DateTimeKind.Local), Name = "Ömrüm Baki Temiz" }
                     );
                 });
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    [Migration("20181003094959_InitialModel")]
-    partial class InitialModel
+    [Migration("20181005210557_Initial Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace ClubSystem.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.Club.ClubEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.Club.Club", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("Clubs");
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.User.UserEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.User.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.UserClubEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.UserClub", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -70,15 +70,15 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("UserClubs");
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.UserClubEntity", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Model.UserClub", b =>
                 {
-                    b.HasOne("ClubSystem.Lib.Model.Club.ClubEntity", "Club")
-                        .WithMany("UserClubEntities")
+                    b.HasOne("ClubSystem.Lib.Model.Club.Club", "Club")
+                        .WithMany()
                         .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ClubSystem.Lib.Model.User.UserEntity", "User")
-                        .WithMany("UserClubEntities")
+                    b.HasOne("ClubSystem.Lib.Model.User.User", "User")
+                        .WithMany("UserClubs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

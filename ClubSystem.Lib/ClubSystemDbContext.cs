@@ -11,7 +11,6 @@ namespace ClubSystem.Lib
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Club> Clubs { get; set; }
-        public DbSet<UserClub> UserClubs { get; set; }
 
         public ClubSystemDbContext(DbContextOptions<ClubSystemDbContext> options) : base(options)
         {
@@ -19,40 +18,33 @@ namespace ClubSystem.Lib
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserClub>()
-                .HasKey(uc => new {uc.UserId, uc.ClubId});
-            
-            var user1 = new User
+            modelBuilder.Entity<UserClub>().HasKey(uc =>
+                new { uc.UserId, uc.ClubId });
+
+            modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 1,
                 Name = "Ömrüm Baki Temiz",
                 CreatedDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now
-            };
-            
-            var club1 = new Club
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 1,
-                Name = "Science Club",
-                UniversityName = "London University",
+                Id = 2,
+                Name = "admin",
                 CreatedDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now
-            };
-            
-            var userClub1 = new List<UserClub>
-            {
-                new UserClub
-                {
-                    User = user1,
-                    Club = club1
-                }
-            };
+            });
 
-            user1.UserClubs = userClub1;
-            club1.UserClubs = userClub1;
-            
-            modelBuilder.Entity<User>(u => u.HasData(user1));
-            modelBuilder.Entity<Club>(c => c.HasData(club1));
+            modelBuilder.Entity<Club>().HasData(new Club
+            {
+                Id = 1,
+                Name = "Space Club",
+                CreatedDate = DateTime.Now,
+                LastModifiedDate = DateTime.Now,
+                UniversityName = "London University"
+            });
         }
     }
 }

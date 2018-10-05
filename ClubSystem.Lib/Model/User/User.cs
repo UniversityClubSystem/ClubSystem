@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using ClubSystem.Lib.Model.Base;
 
@@ -9,5 +10,10 @@ namespace ClubSystem.Lib.Model.User
     {
         public string Name { get; set; }
         public ICollection<UserClub> UserClubs { get; set; }
+
+        public User()
+        {
+            UserClubs = new Collection<UserClub>();
+        }
     }
 }

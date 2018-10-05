@@ -5,12 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations" />
+    <Compile Remove="Migrations\20181003094959_InitialModel.cs" />
+    <Compile Remove="Migrations\20181003094959_InitialModel.Designer.cs" />
+    <Compile Remove="Migrations\20181003130913_SimpleSeed.cs" />
+    <Compile Remove="Migrations\20181003130913_SimpleSeed.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

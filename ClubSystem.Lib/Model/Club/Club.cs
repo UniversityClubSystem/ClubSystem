@@ -9,6 +9,5 @@ namespace ClubSystem.Lib.Model.Club
     {
         public string Name { get; set; }
         public string UniversityName { get; set; }
-        public ICollection<UserClub> UserClubs { get; set; }
     }
 }
