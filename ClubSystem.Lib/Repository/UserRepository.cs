@@ -15,7 +15,12 @@ namespace ClubSystem.Lib.Repository
         {
             _context = context;
         }
-        
+
+        public void AddUser(User user)
+        {
+            _context.Users.Add(user);
+        }
+
         public IEnumerable<User> GetAllUsers()
         {
             return _context.Set<User>().ToList();
