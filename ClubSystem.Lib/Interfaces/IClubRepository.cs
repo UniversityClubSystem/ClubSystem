@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ClubSystem.Lib.Model.Club;
 using ClubSystem.Lib.Model.User;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ClubSystem.Lib.Interfaces
 {
@@ -10,6 +11,6 @@ namespace ClubSystem.Lib.Interfaces
         IEnumerable<Club> GetClub(int id);
         IEnumerable<Club> GetAllClubs();
         IEnumerable<Club> GetAllClubsByUser(int id);
-        Task AddClub(User user);
+        int AddClub(Club club);
     }
 }

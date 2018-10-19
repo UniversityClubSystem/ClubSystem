@@ -19,36 +19,36 @@ namespace ClubSystem.Lib.Repository
             _context = context;
         }
 
-        public async Task AddUser(User user)
+        public int AddUser(User user)
         {
-            var club = new Club
-            {
-                Name = "SpaceClub", CreatedDate = DateTime.Now,
-                UniversityName = "London University"
-            };
-            _context.Clubs.Add(club);
-
-            var _user = new User
+            var newUser = new User
             {
                 Name = user.Name,
                 CreatedDate = DateTime.Now,
                 UserClubs = new List<UserClub>()
             };
-            _context.Users.Add(_user);
 
-            var userClub = new UserClub
+            foreach (var userClub in user.UserClubs)
             {
-                User = _user,
-                Club = club
-            };
-            _user.UserClubs.Add(userClub);
+                newUser.UserClubs.Add(userClub);
+            }
             
-            await _context.SaveChangesAsync();
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+            return newUser.Id;
         }
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Set<User>().ToList();
+            return _context.Set<User>()
+                .Include(user => user.UserClubs)
+                .ToList();
+        }
+        
+        public User GetUser(int id)
+        {
+            return _context.Users
+                .SingleOrDefault(user => user.Id == id);
         }
 
         public IEnumerable<User> GetAllUsersByClub(int clubId)
@@ -61,11 +61,6 @@ namespace ClubSystem.Lib.Repository
                 .Where(user => user.UserClubs
                     .Any(userClubs => userClubs.ClubId == clubId))
                 .ToList();
-        }
-
-        public User GetUser(int id)
-        {
-            return _context.Users.SingleOrDefault(user => user.Id == id);
         }
     }
 }

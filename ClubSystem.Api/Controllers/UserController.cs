@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Model.User;
 using Microsoft.AspNetCore.Mvc;
@@ -7,15 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClubSystem.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly IClubRepository _clubRepository;
-        public UserController(IUserRepository userRepository, IClubRepository clubRepository)
+        public UserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _clubRepository = clubRepository;
         }
 
         [HttpGet("getAllUsers", Name = "AllUsers")]
@@ -40,32 +36,6 @@ namespace ClubSystem.Api.Controllers
             }
 
             var user = _userRepository.GetUser(id);
-
-            return Ok(user);
-        }
-        
-        [HttpGet("getAllClubs", Name = "AllClubs")]
-        public IActionResult GetAllClubs()
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var users = _clubRepository.GetAllClubs();
-
-            return Ok(users);
-        }
-
-        [HttpGet("getClub/{id}", Name = "Club")]
-        public IActionResult GetClub(int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = _clubRepository.GetClub(id);
 
             return Ok(user);
         }
