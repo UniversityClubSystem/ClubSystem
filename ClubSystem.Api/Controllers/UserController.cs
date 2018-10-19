@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using ClubSystem.Lib.Interfaces;
+﻿using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Model.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,16 +40,16 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost("addUser", Name = "AddUser")]
-        public async Task<IActionResult> AddUser([FromBody] User user)
+        public IActionResult AddUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _userRepository.AddUser(user);
+            var response = _userRepository.AddUser(user);
 
-            return Ok();
+            return Ok(response);
         }
 
         [HttpPost("getUsersByClub/{clubId}", Name = "GetUsersByClub")]
