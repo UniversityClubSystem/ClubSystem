@@ -1,5 +1,6 @@
 ﻿using ClubSystem.Lib.Model.User;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ClubSystem.Lib.Interfaces
 {
@@ -8,6 +9,6 @@ namespace ClubSystem.Lib.Interfaces
         IEnumerable<User> GetAllUsers();
         IEnumerable<User> GetAllUsersByClub(int clubId);
         User GetUser(int id);
-        void AddUser(User user);
+        int AddUser(User user);
     }
 }
