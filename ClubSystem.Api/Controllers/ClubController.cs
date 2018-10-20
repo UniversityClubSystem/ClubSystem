@@ -13,7 +13,7 @@ namespace ClubSystem.Api.Controllers
             _clubRepository = clubRepository;
         }
 
-        [HttpGet("getAllClubs")]
+        [HttpGet]
         public IActionResult GetAllClubs()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -23,7 +23,7 @@ namespace ClubSystem.Api.Controllers
             return Ok(users);
         }
 
-        [HttpGet("getClub/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetClub(int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -33,7 +33,7 @@ namespace ClubSystem.Api.Controllers
             return Ok(user);
         }
 
-        [HttpPost("addClub")]
+        [HttpPost]
         public IActionResult AddClub([FromBody] Club club)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

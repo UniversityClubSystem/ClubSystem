@@ -13,7 +13,7 @@ namespace ClubSystem.Api.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("getAllUsers")]
+        [HttpGet]
         public IActionResult GetAllUsers()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -23,7 +23,7 @@ namespace ClubSystem.Api.Controllers
             return Ok(users);
         }
 
-        [HttpGet("getUser/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetUser(int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -33,7 +33,7 @@ namespace ClubSystem.Api.Controllers
             return Ok(user);
         }
 
-        [HttpPost("addUser")]
+        [HttpPost]
         public IActionResult AddUser([FromBody] User user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -41,21 +41,6 @@ namespace ClubSystem.Api.Controllers
             var response = _userRepository.AddUser(user);
 
             return Ok(response);
-        }
-
-        [HttpPost("getUsersByClub/{clubId}")]
-        public ActionResult<User> GetUsersByClub(int clubId)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var users = _userRepository.GetAllUsersByClub(clubId);
-
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(users);
         }
     }
 }
