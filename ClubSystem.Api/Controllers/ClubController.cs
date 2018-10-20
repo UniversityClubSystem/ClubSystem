@@ -12,40 +12,32 @@ namespace ClubSystem.Api.Controllers
         {
             _clubRepository = clubRepository;
         }
-        
-        [HttpGet("getAllClubs", Name = "AllClubs")]
+
+        [HttpGet("getAllClubs")]
         public IActionResult GetAllClubs()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var users = _clubRepository.GetAllClubs();
 
             return Ok(users);
         }
-        
-        [HttpGet("getClub/{id}", Name = "Club")]
+
+        [HttpGet("getClub/{id}")]
         public IActionResult GetClub(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = _clubRepository.GetClub(id);
 
             return Ok(user);
         }
 
-        [HttpPost("addClub", Name = "AddClub")]
+        [HttpPost("addClub")]
         public IActionResult AddClub([FromBody] Club club)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
             var id =_clubRepository.AddClub(club);
             
             return Ok(id);
