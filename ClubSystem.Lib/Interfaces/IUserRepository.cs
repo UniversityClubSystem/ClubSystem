@@ -9,6 +9,6 @@ namespace ClubSystem.Lib.Interfaces
         IEnumerable<User> GetAllUsers();
         IEnumerable<User> GetAllUsersByClub(int clubId);
         User GetUser(int id);
-        int AddUser(User user);
+        User AddUser(User user);
     }
 }

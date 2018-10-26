@@ -20,31 +20,6 @@ namespace ClubSystem.Lib
         {
             modelBuilder.Entity<UserClub>().HasKey(uc =>
                 new { uc.UserId, uc.ClubId });
-
-            modelBuilder.Entity<User>().HasData(new User
-            {
-                Id = 1,
-                Name = "Ömrüm Baki Temiz",
-                CreatedDate = DateTime.Now,
-                LastModifiedDate = DateTime.Now
-            });
-
-            modelBuilder.Entity<User>().HasData(new User
-            {
-                Id = 2,
-                Name = "admin",
-                CreatedDate = DateTime.Now,
-                LastModifiedDate = DateTime.Now
-            });
-
-            modelBuilder.Entity<Club>().HasData(new Club
-            {
-                Id = 1,
-                Name = "Space Club",
-                CreatedDate = DateTime.Now,
-                LastModifiedDate = DateTime.Now,
-                UniversityName = "London University"
-            });
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ClubSystem.Lib.Repository
             _context = context;
         }
 
-        public int AddUser(User user)
+        public User AddUser(User user)
         {
             var newUser = new User
             {
@@ -35,7 +35,7 @@ namespace ClubSystem.Lib.Repository
             
             _context.Users.Add(newUser);
             _context.SaveChanges();
-            return newUser.Id;
+            return newUser;
         }
 
         public IEnumerable<User> GetAllUsers()
