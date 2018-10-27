@@ -13,7 +13,7 @@ namespace ClubSystem.Test
     public class UserRepositoryTest
     {
         [Fact]
-        public void Should_Throw_Exception_When_Empty_User()
+        public void ShouldThrowExceptionWhenEmptyUser()
         {
             IUserRepository userRepository = GetInMemoryUserRepository();
 
@@ -23,7 +23,7 @@ namespace ClubSystem.Test
         }
 
         [Fact]
-        public void Should_Throw_Null_Reference_Exception()
+        public void ShouldThrowNullReferenceException()
         {
             IUserRepository userRepository = GetInMemoryUserRepository();
 
@@ -33,7 +33,7 @@ namespace ClubSystem.Test
         }
 
         [Fact]
-        public void Should_Throw_Name_Cannot_Be_Null_Exception()
+        public void ShouldThrowNameCannotBeNullException()
         {
             IUserRepository userRepository = GetInMemoryUserRepository();
 
@@ -43,7 +43,7 @@ namespace ClubSystem.Test
         }
 
         [Fact]
-        public void Should_Get_All_Added_Users()
+        public void ShouldGetAllAddedUsers()
         {
             IUserRepository userRepository = GetInMemoryUserRepository();
 

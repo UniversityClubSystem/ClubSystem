@@ -41,7 +41,7 @@ namespace ClubSystem.Lib.Repository
         }
 
         /// <summary>
-        /// Bu metod user nesnesinin null kontrollerini yapar ve gerekli hatalarý verir.
+        /// Bu metod user nesnesinin null kontrollerini yapar ve gerekli hatalarï¿½ verir.
         /// </summary>
         /// <param name="user"></param>
         private void ValidateUser(User user)
@@ -50,7 +50,8 @@ namespace ClubSystem.Lib.Repository
             {
                 throw new UserCannotBeNullException("User Cannot Be Null");
             }
-            else if (user.Name == null)
+
+            if (user.Name == null)
             {
                 throw new UserNameCannotBeNullException("Username Cannot Be Null");
             }
