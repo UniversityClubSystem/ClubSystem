@@ -38,9 +38,9 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
-            var id =_clubRepository.AddClub(club);
+            var newClub =_clubRepository.AddClub(club);
             
-            return Ok(id);
+            return Ok(newClub);
         }
     }
 }
