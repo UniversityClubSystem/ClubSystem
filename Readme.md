@@ -1,6 +1,6 @@
 # UniversityClubSystem Api
 
-[![Build status](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_apis/build/status/ClubSystem.Api-ASP.NET%20Core-CI)](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_build/latest?definitionId=-1)
+[![Build Status](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_apis/build/status/UniversityClubSystem.ClubSystem)](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_build/latest?definitionId=4)
 
 [Postman Import Link](https://www.getpostman.com/collections/1ee260fb9d8f0eeca1d9)
 
