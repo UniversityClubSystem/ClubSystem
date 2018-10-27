@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
+using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Model;
-using ClubSystem.Lib.Model.Club;
 using ClubSystem.Lib.Model.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +21,8 @@ namespace ClubSystem.Lib.Repository
 
         public User AddUser(User user)
         {
+            ValidateUser(user);
+
             var newUser = new User
             {
                 Name = user.Name,
@@ -36,6 +38,41 @@ namespace ClubSystem.Lib.Repository
             _context.Users.Add(newUser);
             _context.SaveChanges();
             return newUser;
+        }
+
+        /// <summary>
+        /// Bu metod user nesnesinin null kontrollerini yapar ve gerekli hatalarý verir.
+        /// </summary>
+        /// <param name="user"></param>
+        private void ValidateUser(User user)
+        {
+            if (user == null)
+            {
+                throw new UserCannotBeNullException("User Cannot Be Null");
+            }
+            else if (user.Name == null)
+            {
+                throw new UserNameCannotBeNullException("Username Cannot Be Null");
+            }
+        }
+
+        public IEnumerable<User> AddUsers(IEnumerable<User> users)
+        {
+            var newUsers = new Collection<User>();
+
+            foreach (var user in users)
+            {
+                var newUser = AddUser(user);
+
+                if (newUser != null)
+                {
+                    newUsers.Add(newUser);
+                }
+            }
+
+            Context.AddRange(newUsers);
+
+            return newUsers;
         }
 
         public IEnumerable<User> GetAllUsers()

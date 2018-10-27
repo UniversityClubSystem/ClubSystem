@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ClubSystem.Lib.Model;
+﻿using ClubSystem.Lib.Model;
 using ClubSystem.Lib.Model.Club;
 using ClubSystem.Lib.Model.User;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +18,10 @@ namespace ClubSystem.Lib
         {
             modelBuilder.Entity<UserClub>().HasKey(uc =>
                 new { uc.UserId, uc.ClubId });
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Name)
+                .IsRequired(true);
         }
     }
 }
