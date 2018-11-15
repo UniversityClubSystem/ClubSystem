@@ -19,7 +19,6 @@ namespace ClubSystem.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var users = _userRepository.GetAllUsers();
-
             return Ok(users);
         }
 

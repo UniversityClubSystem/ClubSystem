@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Model;
 using ClubSystem.Lib.Model.Club;
-using ClubSystem.Lib.Model.User;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ClubSystem.Lib.Repository
 {
