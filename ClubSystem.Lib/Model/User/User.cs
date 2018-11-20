@@ -11,6 +11,11 @@ namespace ClubSystem.Lib.Model.User
     {
         [Required]
         public string Name { get; set; }
+        
+        public string Email { get; set; }
+        
+        public string Password { get; set; }
+        
         public ICollection<UserClub> UserClubs { get; set; }
 
         public User()
