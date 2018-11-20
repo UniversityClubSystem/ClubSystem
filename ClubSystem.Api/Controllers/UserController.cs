@@ -1,4 +1,5 @@
-﻿using ClubSystem.Lib.Interfaces;
+﻿using System.Linq;
+using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Model.User;
 using Microsoft.AspNetCore.Mvc;
 

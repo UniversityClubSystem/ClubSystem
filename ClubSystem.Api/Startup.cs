@@ -1,8 +1,10 @@
 ﻿using ClubSystem.Lib;
 using ClubSystem.Lib.Interfaces;
+using ClubSystem.Lib.Model;
 using ClubSystem.Lib.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,10 +28,20 @@ namespace ClubSystem.Api
         {
             services.AddDbContext<ClubSystemDbContext>(options =>
                 options.UseSqlServer(
-                        Configuration.GetConnectionString("AzureStudentSqlServer"),
-                        b => b.MigrationsAssembly("ClubSystem.Api")
-                    ));
-            
+                    Configuration.GetConnectionString("AzureStudentSqlServer"),
+                    b => b.MigrationsAssembly("ClubSystem.Api")
+                ));
+
+            services.AddDbContext<ApplicationIdentityDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("AzureStudentIdentityDb"),
+                    b => b.MigrationsAssembly("ClubSystem.Api")
+                ));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
@@ -54,6 +66,8 @@ namespace ClubSystem.Api
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+            
             app.UseCors(builder => builder
                 .AllowAnyHeader()
                 .AllowAnyMethod()
