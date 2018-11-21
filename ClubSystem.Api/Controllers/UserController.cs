@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Model;
 using ClubSystem.Lib.Model.User;
 using Microsoft.AspNetCore.Identity;
@@ -24,22 +23,8 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            //var users = _userRepository.GetAllUsers();
-            //return Ok(users);
             return Ok(_userManager.Users);
         }
-
-        /*
-        [HttpGet("{id}")]
-        public IActionResult GetUser(int id)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var user = _userRepository.GetUser(id);
-
-            return Ok(user);
-        }
-        */
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] User user)
@@ -48,12 +33,12 @@ namespace ClubSystem.Api.Controllers
 
             var loginUser = new ApplicationUser
             {
-                Email = user.Email,
+                UserName = user.Username,
                 PasswordHash = user.Password
             };
 
             var result =
-                await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.PasswordHash, false, false);
+                await _signInManager.PasswordSignInAsync(loginUser.UserName, loginUser.PasswordHash, false, false);
 
             if (result.Succeeded)
                 return Ok(result);
@@ -66,7 +51,7 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var newUser = new ApplicationUser {UserName = user.Name, Email = user.Email};
+            var newUser = new ApplicationUser {UserName = user.Username, Email = user.Email};
             var result = await _userManager.CreateAsync(newUser, user.Password);
 
             if (result.Succeeded) return Ok(result);

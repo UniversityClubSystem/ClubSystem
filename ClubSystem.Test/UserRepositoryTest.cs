@@ -37,7 +37,7 @@ namespace ClubSystem.Test
         {
             IUserRepository userRepository = GetInMemoryUserRepository();
 
-            User user = new User { Name = null };
+            User user = new User { Username = null };
 
             Assert.Throws<UserNameCannotBeNullException>(() => userRepository.AddUser(user));
         }
@@ -48,17 +48,17 @@ namespace ClubSystem.Test
             IUserRepository userRepository = GetInMemoryUserRepository();
 
             userRepository.AddUsers(new Collection<User> {
-                new User { Name = "user1" },
-                new User { Name = "user2" },
-                new User { Name = "user3" }
+                new User { Username = "user1" },
+                new User { Username = "user2" },
+                new User { Username = "user3" }
             });
 
             IEnumerable<User> users = userRepository.GetAllUsers();
 
             Assert.Collection(users,
-                item => Assert.Contains("user1", item.Name),
-                item => Assert.Contains("user2", item.Name),
-                item => Assert.Contains("user3", item.Name));
+                item => Assert.Contains("user1", item.Username),
+                item => Assert.Contains("user2", item.Username),
+                item => Assert.Contains("user3", item.Username));
         }
 
         private IUserRepository GetInMemoryUserRepository()

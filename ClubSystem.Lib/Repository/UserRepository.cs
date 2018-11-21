@@ -25,7 +25,7 @@ namespace ClubSystem.Lib.Repository
 
             var newUser = new User
             {
-                Name = user.Name,
+                Username = user.Username,
                 CreatedDate = DateTime.Now,
                 UserClubs = new List<UserClub>()
             };
@@ -51,7 +51,7 @@ namespace ClubSystem.Lib.Repository
                 throw new UserCannotBeNullException("User Cannot Be Null");
             }
 
-            if (user.Name == null)
+            if (user.Username == null)
             {
                 throw new UserNameCannotBeNullException("Username Cannot Be Null");
             }
