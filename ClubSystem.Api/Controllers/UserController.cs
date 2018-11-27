@@ -51,10 +51,7 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var newUser = new ApplicationUser
-            {
-                UserName = user.UserName, Email = user.Email
-            };
+            var newUser = new ApplicationUser { UserName = user.UserName, Email = user.Email };
             var result = await _userManager.CreateAsync(newUser, user.Password);
 
             if (result.Succeeded)
@@ -70,30 +67,5 @@ namespace ClubSystem.Api.Controllers
 
             return BadRequest(ModelState);
         }
-
-        // TODO: Extension metoda çevirilebilir
-        //private string GenerateJwtToken(string username, IdentityUser user)
-        //{
-        //    var claims = new List<Claim>
-        //    {
-        //        new Claim(JwtRegisteredClaimNames.Sub, username),
-        //        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //        new Claim(ClaimTypes.NameIdentifier, user.Id)
-        //    };
-
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
-        //    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        //    var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
-
-        //    var token = new JwtSecurityToken(
-        //        _configuration["JwtIssuer"],
-        //        _configuration["JwtIssuer"],
-        //        claims,
-        //        expires: expires,
-        //        signingCredentials: creds
-        //    );
-
-        //    return new JwtSecurityTokenHandler().WriteToken(token);
-        //}
     }
 }
