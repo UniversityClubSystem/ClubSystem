@@ -20,7 +20,7 @@ namespace ClubSystem.Lib
                 new { uc.UserId, uc.ClubId });
 
             modelBuilder.Entity<User>()
-                .Property(u => u.Username)
+                .Property(u => u.UserName)
                 .IsRequired(true);
         }
     }

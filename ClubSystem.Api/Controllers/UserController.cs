@@ -43,12 +43,12 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(user.Username, user.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
 
-            if (!result.Succeeded) throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
+            if (!result.Succeeded) return BadRequest(ModelState);
 
-            var appUser = _userManager.Users.SingleOrDefault(r => r.Email == user.Email);
-            return GenerateJwtToken(user.Email, appUser);
+            var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == user.UserName);
+            return GenerateJwtToken(user.UserName, appUser);
         }
 
         [HttpPost]
@@ -58,14 +58,14 @@ namespace ClubSystem.Api.Controllers
 
             var newUser = new ApplicationUser
             {
-                UserName = user.Username, Email = user.Email
+                UserName = user.UserName, Email = user.Email
             };
             var result = await _userManager.CreateAsync(newUser, user.Password);
 
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(newUser, false);
-                return GenerateJwtToken(user.Email, newUser);
+                return GenerateJwtToken(user.UserName, newUser);
             }
 
             foreach (var responseError in result.Errors)
@@ -77,11 +77,11 @@ namespace ClubSystem.Api.Controllers
         }
 
         // TODO: Extension metoda çevirilebilir
-        private string GenerateJwtToken(string email, IdentityUser user)
+        private string GenerateJwtToken(string username, IdentityUser user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
