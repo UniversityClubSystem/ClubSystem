@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ClubSystem.Lib.Model;
 using ClubSystem.Lib.Model.User;
@@ -40,7 +41,7 @@ namespace ClubSystem.Api.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
 
-            if (!result.Succeeded) return BadRequest(ModelState);
+            if (!result.Succeeded) return BadRequest("Invalid Credentials");
 
             var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == user.UserName);
             return _jwtTokenGenerator.GenerateJwtToken(user.UserName, appUser);
