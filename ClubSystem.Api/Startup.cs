@@ -70,8 +70,10 @@ namespace ClubSystem.Api
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddHealthChecks();
+                
             services.AddScoped<IClubRepository, ClubRepository>();
         }
 
@@ -86,6 +88,8 @@ namespace ClubSystem.Api
             {
                 app.UseHsts();
             }
+
+            app.UseHealthChecks("/health");
 
             app.UseAuthentication();
 
