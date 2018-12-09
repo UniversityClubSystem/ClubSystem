@@ -9,6 +9,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ClubSystem.Api.Extensions
 {
+    //
+    // Summary:
+    //     Provides the APIs for generation json web token.
+    //
     public class JwtTokenGenerator
     {
         private readonly IConfiguration _configuration;
