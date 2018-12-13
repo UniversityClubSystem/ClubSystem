@@ -9,15 +9,14 @@ trigger:
 - dev
 - features/*
 
-- task: DotNetCoreInstaller@0
-  displayName: Installing .net core sdk 2.2.100
-  inputs:
-    version: '2.2.100'
-    packageType: sdk
-
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.2.100'
+    packageType: sdk
 
 - task: DotNetCoreCLI@2
   inputs:
