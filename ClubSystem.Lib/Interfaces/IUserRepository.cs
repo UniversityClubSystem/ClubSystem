@@ -1,5 +1,5 @@
-﻿using ClubSystem.Lib.Model.User;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ClubSystem.Lib.Models.Entities;
 
 namespace ClubSystem.Lib.Interfaces
 {

@@ -1,5 +1,5 @@
 using ClubSystem.Lib.Interfaces;
-using ClubSystem.Lib.Model.Club;
+using ClubSystem.Lib.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClubSystem.Api.Controllers

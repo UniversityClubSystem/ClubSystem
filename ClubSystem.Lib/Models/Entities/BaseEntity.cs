@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClubSystem.Lib.Model.Base
+namespace ClubSystem.Lib.Models.Entities
 {
     public class BaseModel
     {

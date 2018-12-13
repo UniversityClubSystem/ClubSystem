@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace ClubSystem.Lib.Model
+namespace ClubSystem.Lib.Models
 {
     public class ApplicationUser : IdentityUser
     {

@@ -1,6 +1,4 @@
-﻿using ClubSystem.Lib.Model;
-using ClubSystem.Lib.Model.Club;
-using ClubSystem.Lib.Model.User;
+﻿using ClubSystem.Lib.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib
@@ -9,6 +7,7 @@ namespace ClubSystem.Lib
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Club> Clubs { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         public ClubSystemDbContext(DbContextOptions<ClubSystemDbContext> options) : base(options)
         {
@@ -17,11 +16,10 @@ namespace ClubSystem.Lib
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserClub>().HasKey(uc =>
-                new { uc.UserId, uc.ClubId });
+                new {uc.UserId, uc.ClubId});
 
-            modelBuilder.Entity<User>()
-                .Property(u => u.UserName)
-                .IsRequired(true);
+            modelBuilder.Entity<UserPost>().HasKey(up =>
+                new {up.UserId, up.PostId});
         }
     }
 }

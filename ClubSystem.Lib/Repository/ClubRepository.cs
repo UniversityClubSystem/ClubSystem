@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ClubSystem.Lib.Interfaces;
-using ClubSystem.Lib.Model;
-using ClubSystem.Lib.Model.Club;
+using ClubSystem.Lib.Models.Entities;
 
 namespace ClubSystem.Lib.Repository
 {

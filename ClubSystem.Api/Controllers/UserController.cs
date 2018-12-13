@@ -1,12 +1,11 @@
 ﻿using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using ClubSystem.Lib.Model;
-using ClubSystem.Lib.Model.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ClubSystem.Api.Extensions;
+using ClubSystem.Lib.Models;
+using ClubSystem.Lib.Models.Entities;
 using Microsoft.Extensions.Configuration;
 
 namespace ClubSystem.Api.Controllers

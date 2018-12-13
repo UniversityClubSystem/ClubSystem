@@ -1,16 +1,5 @@
-﻿using ClubSystem.Api.Controllers;
-using ClubSystem.Lib.Model;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Moq;
-using Xunit;
-using ClubSystem.Lib.Model.User;
-using Microsoft.Extensions.Options;
-using System;
-using ClubSystem.Api.Extensions;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication;
+﻿using Xunit;
+using ClubSystem.Lib.Models.Entities;
 
 namespace ClubSystem.Test
 {

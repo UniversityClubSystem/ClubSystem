@@ -2,9 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ClubSystem.Lib.Model.Base;
 
-namespace ClubSystem.Lib.Model.Club
+namespace ClubSystem.Lib.Models.Entities
 {
     [Table("Clubs")]
     public class Club : BaseModel

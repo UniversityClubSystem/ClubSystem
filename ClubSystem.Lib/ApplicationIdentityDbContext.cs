@@ -1,4 +1,4 @@
-using ClubSystem.Lib.Model;
+using ClubSystem.Lib.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ClubSystem.Lib
 {
-    class BaseResource
+    class BaseDto
     {
         public int Identifier { get; set; }
         public string CreatedBy { get; set; }

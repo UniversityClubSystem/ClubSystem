@@ -4,14 +4,16 @@ using ClubSystem.Lib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    partial class ClubSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181213230443_PostEdit")]
+    partial class PostEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,10 +76,14 @@ namespace ClubSystem.Api.Migrations
 
                     b.Property<string>("Password");
 
+                    b.Property<int?>("PostId");
+
                     b.Property<string>("UserName")
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.ToTable("Users");
                 });
@@ -95,17 +101,11 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("UserClubs");
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserPost", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.User", b =>
                 {
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("PostId");
-
-                    b.HasKey("UserId", "PostId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("UserPosts");
+                    b.HasOne("ClubSystem.Lib.Models.Entities.Post")
+                        .WithMany("Authors")
+                        .HasForeignKey("PostId");
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserClub", b =>
@@ -117,19 +117,6 @@ namespace ClubSystem.Api.Migrations
 
                     b.HasOne("ClubSystem.Lib.Models.Entities.User", "User")
                         .WithMany("UserClubs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserPost", b =>
-                {
-                    b.HasOne("ClubSystem.Lib.Models.Entities.Post", "Post")
-                        .WithMany("UserPosts")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ClubSystem.Lib.Models.Entities.User", "User")
-                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

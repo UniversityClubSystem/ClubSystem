@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
-using ClubSystem.Lib.Model;
-using ClubSystem.Lib.Model.User;
+using ClubSystem.Lib.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib.Repository
