@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,14 @@ namespace ClubSystem.Lib.Repository
 
         public Post AddPost(Post post)
         {
+            if (post == null)
+            {
+                throw new PostCannotBeNullException();
+            }
+            else if (post.Title == null)
+            {
+                // TODO: validate post
+            }
             var newPost = new Post
             {
                 Title = post.Title,

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Microsoft.EntityFrameworkCore;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Repository;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace ClubSystem.Test
@@ -16,7 +17,6 @@ namespace ClubSystem.Test
         public void ShouldThrowExceptionWhenEmptyUser()
         {
             IUserRepository userRepository = GetInMemoryUserRepository();
-
             User user = new User();
 
             Assert.Throws<UserNameCannotBeNullException>(() => userRepository.AddUser(user));
@@ -65,7 +65,7 @@ namespace ClubSystem.Test
         {
             DbContextOptions<ClubSystemDbContext> options;
             var builder = new DbContextOptionsBuilder<ClubSystemDbContext>();
-            options = builder.UseInMemoryDatabase("InMemoryClubSystemDb").Options;
+            options = builder.UseInMemoryDatabase(new Guid().ToString()).Options;
 
             ClubSystemDbContext clubSystemDbContext = new ClubSystemDbContext(options);
             clubSystemDbContext.Database.EnsureDeleted();
