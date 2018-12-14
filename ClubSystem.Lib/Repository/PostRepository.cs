@@ -5,6 +5,7 @@ using System.Linq;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Entities;
+using ClubSystem.Lib.Validators;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib.Repository
@@ -18,7 +19,7 @@ namespace ClubSystem.Lib.Repository
             _context = context;
         }
 
-        public IEnumerable<Post> GetAllPosts()
+        public ICollection<Post> GetAllPosts()
         {
             return _context.Set<Post>().Include(post => post.UserPosts).ToList();
         }
@@ -34,27 +35,36 @@ namespace ClubSystem.Lib.Repository
             {
                 throw new PostCannotBeNullException();
             }
-            else if (post.Title == null)
+            else
             {
-                // TODO: validate post
-            }
-            var newPost = new Post
-            {
-                Title = post.Title,
-                Text = post.Text,
-                CreatedDate = DateTime.Now,
-                MediaId = post.MediaId,
-                UserPosts = new Collection<UserPost>()
-            };
+                var postValidator = new PostValidator();
+                var validationResult = postValidator.Validate(post);
 
-            foreach (var userPost in post.UserPosts)
-            {
-                newPost.UserPosts.Add(userPost);
+                if (validationResult.IsValid)
+                {
+                    var newPost = new Post
+                    {
+                        Title = post.Title,
+                        Text = post.Text,
+                        CreatedDate = DateTime.Now,
+                        MediaId = post.MediaId,
+                        UserPosts = new Collection<UserPost>()
+                    };
+
+                    foreach (var userPost in post.UserPosts)
+                    {
+                        newPost.UserPosts.Add(userPost);
+                    }
+
+                    _context.Posts.Add(post);
+                    _context.SaveChanges();
+                    return post;
+                }
+                else
+                {
+                    throw new PostIsNotValidException();
+                }
             }
-            
-            _context.Posts.Add(post);
-            _context.SaveChanges();
-            return post;
         }
     }
 }

@@ -4,7 +4,6 @@ using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Repository;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -16,33 +15,47 @@ namespace ClubSystem.Test
         [Fact]
         public void ShouldAddPost()
         {
-            var mock = new Mock<IPostRepository>();
-            var userPosts = new List<UserPost> { new UserPost { UserId = 15 } };
-            var post = new Post { Title = "title1", Text = "Text1", MediaId = 12345, UserPosts = userPosts };
+            var postRepository = GetInMemoryPostRepository();
 
-            mock.Setup(p => p.AddPost(post)).Returns(post);
+            var userPosts = new List<UserPost> { new UserPost { UserId = 42 } };
+            var post1 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts };
 
-            var response = mock.Object.AddPost(post);
+            var result = postRepository.AddPost(post1);
 
-            Assert.Equal(response, post);
+            Assert.NotNull(result);
+            Assert.Equal(result, post1);
         }
 
         [Fact]
         public void ShouldGetOnlyOnePost()
         {
-            var mock = new Mock<IPostRepository>();
-            var userPosts = new List<UserPost> { new UserPost { UserId = 3 }, new UserPost { UserId = 6 } };
-            var post = new Post { Title = "Title1", Text = "Lorem ipsum", MediaId = 2423, UserPosts = userPosts };
+            var postRepository = GetInMemoryPostRepository();
 
-            mock.Setup(p => p.AddPost(post)).Returns(post);
-            var posts = new List<Post> { post };
-            mock.Setup(p => p.GetAllPosts()).Returns(posts);
+            var userPosts1 = new List<UserPost> { new UserPost { UserId = 125 } };
+            var post1 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts1 };
 
-            var postRepository = mock.Object;
-            postRepository.AddPost(post);
-            var response = postRepository.GetAllPosts();
+            postRepository.AddPost(post1);
+            var result = postRepository.GetAllPosts();
+            
+            Assert.Equal(1, result.Count);
+        }
 
-            Assert.Equal(response, posts);
+        [Fact]
+        public void ShouldGetAllPost()
+        {
+            var postRepository = GetInMemoryPostRepository();
+
+            var userPosts1 = new List<UserPost> { new UserPost { UserId = 125 } };
+            var post1 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts1 };
+
+            var userPosts2 = new List<UserPost> { new UserPost { UserId = 424 } };
+            var post2 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts2 };
+
+            postRepository.AddPost(post1);
+            postRepository.AddPost(post2);
+            var result = postRepository.GetAllPosts();
+            
+            Assert.Equal(2, result.Count);
         }
 
         [Fact]
@@ -56,14 +69,14 @@ namespace ClubSystem.Test
         }
 
         [Fact]
-        public void ShouldThrowPostCannotBeNullException()
+        public void ShouldThrowPostIsNotValidException()
         {
             var postRepository = GetInMemoryPostRepository();
-            Post post1 = null;
-            Post post2 = new Post();
+            Post nullPost = null;
+            Post emptyPost = new Post();
 
-            Assert.Throws<PostCannotBeNullException>(() => postRepository.AddPost(post1));
-            Assert.Throws<PostCannotBeNullException>(() => postRepository.AddPost(post2));
+            Assert.Throws<PostCannotBeNullException>(() => postRepository.AddPost(nullPost));
+            Assert.Throws<PostIsNotValidException>(() => postRepository.AddPost(emptyPost));
         }
 
         [Fact]
@@ -71,13 +84,13 @@ namespace ClubSystem.Test
         {
             IPostRepository postRepository = GetInMemoryPostRepository();
 
-            var userPosts = new List<UserPost> { new UserPost { UserId = 12 } };
-            var post1 = new Post { Id = 3, Title = "PostTitle1", Text = "PostText1", MediaId = 2432, UserPosts = userPosts };
-            var post2 = new Post { Id = 4, Title = "PostTitle2", Text = "PostText2", MediaId = 343534 };
+            var userPosts1 = new List<UserPost> { new UserPost { UserId = 12 } };
+            var userPosts2 = new List<UserPost> { new UserPost { UserId = 12 } };
+            var post1 = new Post { Id = 3, Title = "PostTitle1", Text = "PostText1", MediaId = 2432, UserPosts = userPosts1 };
+            var post2 = new Post { Id = 4, Title = "PostTitle2", Text = "PostText2", MediaId = 343534, UserPosts = userPosts2 };
 
             postRepository.AddPost(post1);
             postRepository.AddPost(post2);
-
             var response = postRepository.GetPost(post1.Id);
 
             Assert.NotEqual(response, post2);
