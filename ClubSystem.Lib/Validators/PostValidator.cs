@@ -9,7 +9,7 @@ namespace ClubSystem.Lib.Validators
         {
             RuleFor(x => x.Title).NotEmpty();
             RuleFor(x => x.Text).NotEmpty();
-            RuleFor(x => x.UserPosts).NotEmpty();
+            RuleFor(x => x.Users).NotEmpty();
         }
     }
 }

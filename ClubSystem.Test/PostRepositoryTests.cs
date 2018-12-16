@@ -17,7 +17,7 @@ namespace ClubSystem.Test
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userPosts = new List<UserPost> { new UserPost { UserId = 42 } };
+            var userPosts = new List<ApplicationUserPost> { new ApplicationUserPost { UserId = 42 } };
             var post1 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts };
 
             var result = postRepository.AddPost(post1);
@@ -31,7 +31,7 @@ namespace ClubSystem.Test
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userPosts1 = new List<UserPost> { new UserPost { UserId = 125 } };
+            var userPosts1 = new List<ApplicationUserPost> { new ApplicationUserPost { UserId = 125 } };
             var post1 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts1 };
 
             postRepository.AddPost(post1);
@@ -45,10 +45,10 @@ namespace ClubSystem.Test
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userPosts1 = new List<UserPost> { new UserPost { UserId = 125 } };
+            var userPosts1 = new List<ApplicationUserPost> { new ApplicationUserPost { UserId = 125 } };
             var post1 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts1 };
 
-            var userPosts2 = new List<UserPost> { new UserPost { UserId = 424 } };
+            var userPosts2 = new List<ApplicationUserPost> { new ApplicationUserPost { UserId = 424 } };
             var post2 = new Post { Title = "Title1", Text = "Text1", MediaId = 1234, UserPosts = userPosts2 };
 
             postRepository.AddPost(post1);
@@ -84,8 +84,8 @@ namespace ClubSystem.Test
         {
             IPostRepository postRepository = GetInMemoryPostRepository();
 
-            var userPosts1 = new List<UserPost> { new UserPost { UserId = 12 } };
-            var userPosts2 = new List<UserPost> { new UserPost { UserId = 12 } };
+            var userPosts1 = new List<ApplicationUserPost> { new ApplicationUserPost { UserId = 12 } };
+            var userPosts2 = new List<ApplicationUserPost> { new ApplicationUserPost { UserId = 12 } };
             var post1 = new Post { Id = 3, Title = "PostTitle1", Text = "PostText1", MediaId = 2432, UserPosts = userPosts1 };
             var post2 = new Post { Id = 4, Title = "PostTitle2", Text = "PostText2", MediaId = 343534, UserPosts = userPosts2 };
 

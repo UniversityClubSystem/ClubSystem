@@ -5,7 +5,6 @@ namespace ClubSystem.Lib
 {
     public class ClubSystemDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Post> Posts { get; set; }
 
@@ -15,11 +14,6 @@ namespace ClubSystem.Lib
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserClub>().HasKey(uc =>
-                new {uc.UserId, uc.ClubId});
-
-            modelBuilder.Entity<UserPost>().HasKey(up =>
-                new {up.UserId, up.PostId});
         }
     }
 }

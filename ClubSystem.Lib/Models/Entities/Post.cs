@@ -8,11 +8,11 @@ namespace ClubSystem.Lib.Models.Entities
         public string Title { get; set; }
         public string Text { get; set; }
         public int MediaId { get; set; }
-        public ICollection<UserPost> UserPosts { get; set; }
+        public virtual ICollection<ApplicationUser> Users { get; set; }
 
         public Post()
         {
-            UserPosts = new Collection<UserPost>();
+            Users = new Collection<ApplicationUser>();
         }
     }
 }

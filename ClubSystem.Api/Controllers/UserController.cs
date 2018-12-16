@@ -34,11 +34,11 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<object> Login([FromBody] User user) // TODO: LoginDto model
+        public async Task<object> Login([FromBody] ApplicationUser user) // TODO: LoginDto model
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, false, false);
 
             if (!result.Succeeded) return BadRequest("Invalid Credentials");
 
@@ -47,12 +47,12 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] User user) // TODO: RegisterDto model
+        public async Task<object> Register([FromBody] ApplicationUser user) // TODO: RegisterDto model
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var newUser = new ApplicationUser { UserName = user.UserName, Email = user.Email };
-            var result = await _userManager.CreateAsync(newUser, user.Password);
+            var result = await _userManager.CreateAsync(newUser, user.PasswordHash);
 
             if (result.Succeeded)
             {
