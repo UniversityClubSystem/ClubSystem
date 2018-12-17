@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib.Repository
 {
-    public class UserRepository : Repository<ApplicationUser>, IApplicationUserRepository
+    public class UserRepository : Repository<User>, IApplicationUserRepository
     {
         private readonly ClubSystemDbContext _context;
 
@@ -18,22 +18,22 @@ namespace ClubSystem.Lib.Repository
             _context = context;
         }
 
-        public ApplicationUser AddApplicationUser(ApplicationUser ApplicationUser)
+        public User AddApplicationUser(User ApplicationUser)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ApplicationUser> AddApplicationUsers(IEnumerable<ApplicationUser> ApplicationUsers)
+        public IEnumerable<User> AddApplicationUsers(IEnumerable<User> ApplicationUsers)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ApplicationUser> GetAllApplicationUsers()
+        public IEnumerable<User> GetAllApplicationUsers()
         {
             throw new NotImplementedException();
         }
 
-        public ApplicationUser GetApplicationUser(int id)
+        public User GetApplicationUser(int id)
         {
             throw new NotImplementedException();
         }

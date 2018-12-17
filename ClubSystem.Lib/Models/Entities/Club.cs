@@ -11,11 +11,11 @@ namespace ClubSystem.Lib.Models.Entities
         [Required]
         public string Name { get; set; }
         public string UniversityName { get; set; }
-        public ICollection<ApplicationUser> Users { get; set; }
+        public ICollection<UserClub> UserClubs { get; set; }
 
         public Club()
         {
-            Users = new Collection<ApplicationUser>();
+            UserClubs = new Collection<UserClub>();
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib
 {
-    public class ApplicationIdentityDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationIdentityDbContext : IdentityDbContext<User>
     {
         public ApplicationIdentityDbContext(DbContextOptions<ApplicationIdentityDbContext> options)
             : base(options)

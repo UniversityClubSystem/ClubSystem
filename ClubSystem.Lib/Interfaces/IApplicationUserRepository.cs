@@ -4,11 +4,11 @@ using ClubSystem.Lib.Models.Entities;
 
 namespace ClubSystem.Lib.Interfaces
 {
-    public interface IApplicationUserRepository : IRepository<ApplicationUser>
+    public interface IApplicationUserRepository : IRepository<User>
     {
-        IEnumerable<ApplicationUser> GetAllApplicationUsers();
-        ApplicationUser GetApplicationUser(int id);
-        ApplicationUser AddApplicationUser(ApplicationUser ApplicationUser);
-        IEnumerable<ApplicationUser> AddApplicationUsers(IEnumerable<ApplicationUser> ApplicationUsers);
+        IEnumerable<User> GetAllApplicationUsers();
+        User GetApplicationUser(int id);
+        User AddApplicationUser(User ApplicationUser);
+        IEnumerable<User> AddApplicationUsers(IEnumerable<User> ApplicationUsers);
     }
 }

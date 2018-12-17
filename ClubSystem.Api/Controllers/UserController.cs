@@ -13,11 +13,11 @@ namespace ClubSystem.Api.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly JwtTokenGenerator _jwtTokenGenerator;
 
-        public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -34,7 +34,7 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<object> Login([FromBody] ApplicationUser user) // TODO: LoginDto model
+        public async Task<object> Login([FromBody] User user) // TODO: LoginDto model
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -47,11 +47,11 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] ApplicationUser user) // TODO: RegisterDto model
+        public async Task<object> Register([FromBody] User user) // TODO: RegisterDto model
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var newUser = new ApplicationUser { UserName = user.UserName, Email = user.Email };
+            var newUser = new User { UserName = user.UserName, Email = user.Email };
             var result = await _userManager.CreateAsync(newUser, user.PasswordHash);
 
             if (result.Succeeded)
