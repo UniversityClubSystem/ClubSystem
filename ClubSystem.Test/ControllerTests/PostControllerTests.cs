@@ -1,4 +1,4 @@
-namespace ClubSystem.Test
+namespace ClubSystem.Test.ControllerTests
 {
     public class PostControllerTests
     {

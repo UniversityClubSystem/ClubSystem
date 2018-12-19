@@ -1,7 +1,6 @@
 ﻿using Xunit;
-using ClubSystem.Lib.Models.Entities;
 
-namespace ClubSystem.Test
+namespace ClubSystem.Test.ControllerTests
 {
     public class UserControllerTests
     {

@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using ClubSystem.Lib;
-using ClubSystem.Lib.Exceptions;
-using ClubSystem.Lib.Interfaces;
-using ClubSystem.Lib.Models.Entities;
-using ClubSystem.Lib.Repository;
-using Microsoft.EntityFrameworkCore;
-using Xunit;
-
-namespace ClubSystem.Test
+﻿namespace ClubSystem.Test.RepositoryTests
 {
     public class UserRepositoryTest
     {

@@ -1,62 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Entities;
+using ClubSystem.Lib.Validators;
 
 namespace ClubSystem.Lib.Repository
 {
     public class ClubRepository : Repository<Club>, IClubRepository
     {
         private readonly ClubSystemDbContext _context;
+        
         public ClubRepository(ClubSystemDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public Club AddClub(Club club)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Club> GetAllClubs()
         {
-            throw new NotImplementedException();
+            return _context.Set<Club>().ToList();
         }
 
-        public Club GetClub(int id)
+        public Club GetClub(string id)
         {
-            throw new NotImplementedException();
+            return _context.Clubs.SingleOrDefault(club => club.Id == id);
         }
 
-        //public Club AddClub(Club club)
-        //{
-        //    var newClub = new Club
-        //    {
-        //        Name = club.Name,
-        //        UniversityName = club.UniversityName,
-        //        CreatedDate = DateTime.Now,
-        //        UserClubs = new List<UserClub>()
-        //    };
+        public Club AddClub(Club club)
+        {
+            if (club == null)
+            {
+                throw new ClubCannotBeNullException();
+            }
 
-        //    foreach (var userClub in club.UserClubs)
-        //    {
-        //        newClub.UserClubs.Add(userClub);
-        //    }
+            var clubValidator = new ClubValidator();
+            var validationResult = clubValidator.Validate(club);
 
-        //    _context.Clubs.Add(newClub);
-        //    _context.SaveChanges();
-        //    return newClub;
-        //}
+            if (!validationResult.IsValid) throw new ClubIsNotValidException();
+            var newClub = new Club
+            {
+                Name = club.Name,
+                UniversityName = club.UniversityName,
+                CreatedDate = DateTime.Now,
+                UserClubs = new List<UserClub>()
+            };
 
-        //public IEnumerable<Club> GetAllClubs()
-        //{
-        //    return _context.Set<Club>().ToList();
-        //}
+            foreach (var userClub in club.UserClubs)
+            {
+                newClub.UserClubs.Add(userClub);
+            }
 
-        //public Club GetClub(int id)
-        //{
-        //    return _context.Clubs.SingleOrDefault(club => club.Id == id);
-        //}
+            _context.Clubs.Add(newClub);
+            _context.SaveChanges();
+            return newClub;
+        }
     }
 }

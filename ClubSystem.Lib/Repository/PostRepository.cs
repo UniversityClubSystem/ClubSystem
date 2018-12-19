@@ -39,28 +39,24 @@ namespace ClubSystem.Lib.Repository
             var postValidator = new PostValidator();
             var validationResult = postValidator.Validate(post);
 
-            if (validationResult.IsValid)
+            if (!validationResult.IsValid) throw new PostIsNotValidException();
+            var newPost = new Post
             {
-                var newPost = new Post
-                {
-                    Title = post.Title,
-                    Text = post.Text,
-                    CreatedDate = DateTime.Now,
-                    MediaId = post.MediaId,
-                    UserPosts = new Collection<UserPost>()
-                };
+                Title = post.Title,
+                Text = post.Text,
+                CreatedDate = DateTime.Now,
+                MediaId = post.MediaId,
+                UserPosts = new Collection<UserPost>()
+            };
 
-                foreach (var userPost in post.UserPosts)
-                {
-                    newPost.UserPosts.Add(userPost);
-                }
-
-                _context.Posts.Add(post);
-                _context.SaveChanges();
-                return post;
+            foreach (var userPost in post.UserPosts)
+            {
+                newPost.UserPosts.Add(userPost);
             }
 
-            throw new PostIsNotValidException();
+            _context.Posts.Add(newPost);
+            _context.SaveChanges();
+            return newPost;
         }
     }
 }
