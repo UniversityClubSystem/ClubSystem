@@ -1,5 +1,5 @@
 using ClubSystem.Lib.Interfaces;
-using ClubSystem.Lib.Model.Club;
+using ClubSystem.Lib.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClubSystem.Api.Controllers
@@ -8,6 +8,7 @@ namespace ClubSystem.Api.Controllers
     public class ClubController : Controller
     {
         private readonly IClubRepository _clubRepository;
+        
         public ClubController(IClubRepository clubRepository)
         {
             _clubRepository = clubRepository;
@@ -24,7 +25,7 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetClub(int id)
+        public IActionResult GetClub(string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
