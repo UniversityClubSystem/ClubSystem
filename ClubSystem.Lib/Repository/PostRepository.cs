@@ -19,14 +19,14 @@ namespace ClubSystem.Lib.Repository
             _context = context;
         }
 
+        public Post GetPost(string id)
+        {
+            return _context.Posts.Where(post => post.Id == id).Include(post => post.UserPosts).SingleOrDefault();
+        }
+
         public ICollection<Post> GetAllPosts()
         {
             return _context.Set<Post>().Include(post => post.UserPosts).ToList();
-        }
-
-        public Post GetPost(int id)
-        {
-            return _context.Posts.Where(post => post.Id == id).Include(post => post.UserPosts).SingleOrDefault();
         }
 
         public Post AddPost(Post post)
@@ -35,36 +35,28 @@ namespace ClubSystem.Lib.Repository
             {
                 throw new PostCannotBeNullException();
             }
-            else
+
+            var postValidator = new PostValidator();
+            var validationResult = postValidator.Validate(post);
+
+            if (!validationResult.IsValid) throw new PostIsNotValidException();
+            var newPost = new Post
             {
-                var postValidator = new PostValidator();
-                var validationResult = postValidator.Validate(post);
+                Title = post.Title,
+                Text = post.Text,
+                CreatedDate = DateTime.Now,
+                MediaId = post.MediaId,
+                UserPosts = new Collection<UserPost>()
+            };
 
-                if (validationResult.IsValid)
-                {
-                    var newPost = new Post
-                    {
-                        Title = post.Title,
-                        Text = post.Text,
-                        CreatedDate = DateTime.Now,
-                        MediaId = post.MediaId,
-                        UserPosts = new Collection<UserPost>()
-                    };
-
-                    foreach (var userPost in post.UserPosts)
-                    {
-                        newPost.UserPosts.Add(userPost);
-                    }
-
-                    _context.Posts.Add(post);
-                    _context.SaveChanges();
-                    return post;
-                }
-                else
-                {
-                    throw new PostIsNotValidException();
-                }
+            foreach (var userPost in post.UserPosts)
+            {
+                newPost.UserPosts.Add(userPost);
             }
+
+            _context.Posts.Add(newPost);
+            _context.SaveChanges();
+            return newPost;
         }
     }
 }

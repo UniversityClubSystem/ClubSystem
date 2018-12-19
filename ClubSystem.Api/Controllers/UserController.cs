@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ClubSystem.Api.Extensions;
 using ClubSystem.Lib.Models;
-using ClubSystem.Lib.Models.Entities;
 using Microsoft.Extensions.Configuration;
 
 namespace ClubSystem.Api.Controllers
@@ -13,11 +12,11 @@ namespace ClubSystem.Api.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly JwtTokenGenerator _jwtTokenGenerator;
 
-        public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -38,7 +37,7 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, false, false);
 
             if (!result.Succeeded) return BadRequest("Invalid Credentials");
 
@@ -47,12 +46,12 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] User user) // TODO: RegisterDto model
+        public async Task<object> Register([FromBody] User user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var newUser = new ApplicationUser { UserName = user.UserName, Email = user.Email };
-            var result = await _userManager.CreateAsync(newUser, user.Password);
+            var newUser = new User { UserName = user.UserName, Email = user.Email };
+            var result = await _userManager.CreateAsync(newUser, user.PasswordHash);
 
             if (result.Succeeded)
             {

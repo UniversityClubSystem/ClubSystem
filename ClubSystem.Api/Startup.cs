@@ -36,11 +36,11 @@ namespace ClubSystem.Api
                     b => b.MigrationsAssembly("ClubSystem.Api")
                 ));
 
-            services.AddDbContext<ApplicationIdentityDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("AzureStudentIdentityDb"),
-                    b => b.MigrationsAssembly("ClubSystem.Api")
-                ));
+            //services.AddDbContext<ClubSystemDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("AzureStudentIdentityDb"),
+            //        b => b.MigrationsAssembly("ClubSystem.Api")
+            //    ));
 
             services.AddSwaggerGen(c =>
             {
@@ -57,8 +57,8 @@ namespace ClubSystem.Api
                 });
             });
 
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+            services.AddDefaultIdentity<User>()
+                .AddEntityFrameworkStores<ClubSystemDbContext>();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
