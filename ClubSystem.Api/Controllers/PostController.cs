@@ -33,7 +33,7 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetPost(int id)
+        public IActionResult GetPost(string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

@@ -6,7 +6,7 @@ namespace ClubSystem.Lib.Interfaces
     public interface IClubRepository : IRepository<Club>
     {
         IEnumerable<Club> GetAllClubs();
-        Club GetClub(int id);
+        Club GetClub(string id);
         Club AddClub(Club club);
     }
 }

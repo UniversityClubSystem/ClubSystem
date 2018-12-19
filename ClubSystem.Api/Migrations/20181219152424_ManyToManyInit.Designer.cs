@@ -7,21 +7,86 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ClubSystem.Api.Migrations.ApplicationIdentityDb
+namespace ClubSystem.Api.Migrations
 {
-    [DbContext(typeof(ApplicationIdentityDbContext))]
-    [Migration("20181120205137_IdentityInitial")]
-    partial class IdentityInitial
+    [DbContext(typeof(ClubSystemDbContext))]
+    [Migration("20181219152424_ManyToManyInit")]
+    partial class ManyToManyInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ClubSystem.Lib.Model.ApplicationUser", b =>
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.Club", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<DateTime>("LastModifiedDate");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("UniversityName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clubs");
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.Post", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<DateTime>("LastModifiedDate");
+
+                    b.Property<int>("MediaId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserClub", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("ClubId");
+
+                    b.HasKey("UserId", "ClubId");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("UserClub");
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserPost", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("PostId");
+
+                    b.HasKey("UserId", "PostId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("UserPost");
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -138,9 +203,11 @@ namespace ClubSystem.Api.Migrations.ApplicationIdentityDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -171,15 +238,43 @@ namespace ClubSystem.Api.Migrations.ApplicationIdentityDb
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserClub", b =>
+                {
+                    b.HasOne("ClubSystem.Lib.Models.Entities.Club", "Club")
+                        .WithMany("UserClubs")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ClubSystem.Lib.Models.User", "User")
+                        .WithMany("UserClubs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserPost", b =>
+                {
+                    b.HasOne("ClubSystem.Lib.Models.Entities.Post", "Post")
+                        .WithMany("UserPosts")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ClubSystem.Lib.Models.User", "User")
+                        .WithMany("UserPosts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -192,7 +287,7 @@ namespace ClubSystem.Api.Migrations.ApplicationIdentityDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ClubSystem.Lib.Model.ApplicationUser")
+                    b.HasOne("ClubSystem.Lib.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -200,7 +295,7 @@ namespace ClubSystem.Api.Migrations.ApplicationIdentityDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ClubSystem.Lib.Model.ApplicationUser")
+                    b.HasOne("ClubSystem.Lib.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -213,7 +308,7 @@ namespace ClubSystem.Api.Migrations.ApplicationIdentityDb
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ClubSystem.Lib.Model.ApplicationUser")
+                    b.HasOne("ClubSystem.Lib.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -221,7 +316,7 @@ namespace ClubSystem.Api.Migrations.ApplicationIdentityDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ClubSystem.Lib.Model.ApplicationUser")
+                    b.HasOne("ClubSystem.Lib.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

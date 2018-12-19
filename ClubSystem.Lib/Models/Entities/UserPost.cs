@@ -1,13 +1,10 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ClubSystem.Lib.Models.Entities
+﻿namespace ClubSystem.Lib.Models.Entities
 {
-    [Table("UserPosts")]
     public class UserPost
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
-        public int PostId { get; set; }
+        public string PostId { get; set; }
         public Post Post { get; set; }
     }
 }

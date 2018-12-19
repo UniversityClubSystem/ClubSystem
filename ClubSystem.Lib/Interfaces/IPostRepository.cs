@@ -6,7 +6,7 @@ namespace ClubSystem.Lib.Interfaces
     public interface IPostRepository : IRepository<Post>
     {
         ICollection<Post> GetAllPosts();
-        Post GetPost(int id);
+        Post GetPost(string id);
         Post AddPost(Post club);
     }
 }

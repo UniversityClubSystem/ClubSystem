@@ -15,7 +15,7 @@ namespace ClubSystem.Lib.Repository
             Context = context;
         }
 
-        public T Get(int id)
+        public T Get(string id)
         {
             return Context.Set<T>().Find(id);
         }
