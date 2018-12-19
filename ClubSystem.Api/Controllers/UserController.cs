@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ClubSystem.Api.Extensions;
 using ClubSystem.Lib.Models;
-using ClubSystem.Lib.Models.Entities;
 using Microsoft.Extensions.Configuration;
 
 namespace ClubSystem.Api.Controllers
@@ -47,7 +46,7 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody] User user) // TODO: RegisterDto model
+        public async Task<object> Register([FromBody] User user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
