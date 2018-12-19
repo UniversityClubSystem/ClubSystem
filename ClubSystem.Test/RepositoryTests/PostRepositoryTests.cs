@@ -94,6 +94,8 @@ namespace ClubSystem.Test.RepositoryTests
             var addedPost2 = postRepository.AddPost(post2);
             var response = postRepository.GetPost(addedPost1.Id);
 
+            Assert.NotNull(addedPost1.Id);
+            Assert.NotNull(response);
             Assert.NotEqual(response, addedPost2);
             Assert.Equal(response, addedPost1);
         }
