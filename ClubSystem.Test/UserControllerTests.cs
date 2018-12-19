@@ -9,7 +9,7 @@ namespace ClubSystem.Test
         public void UserCanLogin()
         {
             // Arrange
-            var mockUser = new User { UserName = "user1", Email = "mail@mail.com", Password = "Ultra_Secure2Password!" };
+            // var mockUser = new User { UserName = "user1", Email = "mail@mail.com", Password = "Ultra_Secure2Password!" };
             
             // Act
             // var result = await _userController.Login(mockUser);
