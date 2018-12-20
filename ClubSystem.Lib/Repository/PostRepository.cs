@@ -39,7 +39,7 @@ namespace ClubSystem.Lib.Repository
             var postValidator = new PostValidator();
             var validationResult = postValidator.Validate(post);
 
-            if (!validationResult.IsValid) throw new PostIsNotValidException();
+            if (!validationResult.IsValid) throw new PostIsNotValidException(validationResult.Errors.First().ErrorMessage);
             var newPost = new Post
             {
                 Title = post.Title,

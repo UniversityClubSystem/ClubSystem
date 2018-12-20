@@ -37,7 +37,7 @@ namespace ClubSystem.Lib.Repository
             var clubValidator = new ClubValidator();
             var validationResult = clubValidator.Validate(club);
 
-            if (!validationResult.IsValid) throw new ClubIsNotValidException();
+            if (!validationResult.IsValid) throw new ClubIsNotValidException(validationResult.Errors.First().ErrorMessage);
             var newClub = new Club
             {
                 Name = club.Name,

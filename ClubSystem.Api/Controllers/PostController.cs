@@ -1,17 +1,26 @@
 using ClubSystem.Lib.Interfaces;
+using ClubSystem.Lib.Models;
 using ClubSystem.Lib.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace ClubSystem.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class PostController : Controller
     {
         private readonly IPostRepository _postRepository;
+        private readonly UserManager<User> _userManager;
         
-        public PostController(IPostRepository postRepository)
+        public PostController(UserManager<User> userManager, IPostRepository postRepository)
         {
             _postRepository = postRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -25,10 +34,14 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddPost([FromBody] Post post)
+        public async Task<IActionResult> AddPost([FromBody] Post post)
         {
-            var addedPost = _postRepository.AddPost(post);
+            string userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            post.UserPosts = new Collection<UserPost> { new UserPost { UserId = user.Id } };
 
+            var addedPost = _postRepository.AddPost(post);
+            
             return Ok(addedPost);
         }
 
