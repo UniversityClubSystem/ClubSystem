@@ -16,7 +16,7 @@ namespace ClubSystem.Api.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly UserManager<User> _userManager;
-        
+
         public PostController(UserManager<User> userManager, IPostRepository postRepository)
         {
             _postRepository = postRepository;
@@ -29,19 +29,21 @@ namespace ClubSystem.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var allPosts = _postRepository.GetAllPosts();
-            
+
             return Ok(allPosts);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddPost([FromBody] Post post)
         {
-            string userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
+            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            post.UserPosts = new Collection<UserPost> { new UserPost { UserId = user.Id } };
+            post.UserPosts = new Collection<UserPost> {new UserPost {UserId = user?.Id}};
 
             var addedPost = _postRepository.AddPost(post);
-            
+
             return Ok(addedPost);
         }
 
