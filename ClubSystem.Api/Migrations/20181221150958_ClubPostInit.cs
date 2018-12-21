@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClubSystem.Api.Migrations
 {
-    public partial class ManyToManyInit : Migration
+    public partial class ClubPostInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -185,7 +185,7 @@ namespace ClubSystem.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserClub",
+                name: "UserClubs",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -193,15 +193,15 @@ namespace ClubSystem.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserClub", x => new { x.UserId, x.ClubId });
+                    table.PrimaryKey("PK_UserClubs", x => new { x.UserId, x.ClubId });
                     table.ForeignKey(
-                        name: "FK_UserClub_Clubs_ClubId",
+                        name: "FK_UserClubs_Clubs_ClubId",
                         column: x => x.ClubId,
                         principalTable: "Clubs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserClub_AspNetUsers_UserId",
+                        name: "FK_UserClubs_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -209,7 +209,34 @@ namespace ClubSystem.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPost",
+                name: "ClubPosts",
+                columns: table => new
+                {
+                    ClubId = table.Column<string>(nullable: false),
+                    PostId = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClubPosts", x => new { x.ClubId, x.PostId });
+                    table.ForeignKey(
+                        name: "FK_ClubPosts_Clubs_ClubId",
+                        column: x => x.ClubId,
+                        principalTable: "Clubs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClubPosts_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPosts",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -217,15 +244,15 @@ namespace ClubSystem.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPost", x => new { x.UserId, x.PostId });
+                    table.PrimaryKey("PK_UserPosts", x => new { x.UserId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_UserPost_Posts_PostId",
+                        name: "FK_UserPosts_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserPost_AspNetUsers_UserId",
+                        name: "FK_UserPosts_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -272,13 +299,18 @@ namespace ClubSystem.Api.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClub_ClubId",
-                table: "UserClub",
+                name: "IX_ClubPosts_PostId",
+                table: "ClubPosts",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserClubs_ClubId",
+                table: "UserClubs",
                 column: "ClubId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPost_PostId",
-                table: "UserPost",
+                name: "IX_UserPosts_PostId",
+                table: "UserPosts",
                 column: "PostId");
         }
 
@@ -300,10 +332,13 @@ namespace ClubSystem.Api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "UserClub");
+                name: "ClubPosts");
 
             migrationBuilder.DropTable(
-                name: "UserPost");
+                name: "UserClubs");
+
+            migrationBuilder.DropTable(
+                name: "UserPosts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

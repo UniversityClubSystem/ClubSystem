@@ -38,6 +38,25 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("Clubs");
                 });
 
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.ClubPost", b =>
+                {
+                    b.Property<string>("ClubId");
+
+                    b.Property<string>("PostId");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<string>("Id");
+
+                    b.Property<DateTime>("LastModifiedDate");
+
+                    b.HasKey("ClubId", "PostId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("ClubPosts");
+                });
+
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.Post", b =>
                 {
                     b.Property<string>("Id")
@@ -68,7 +87,7 @@ namespace ClubSystem.Api.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("UserClub");
+                    b.ToTable("UserClubs");
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserPost", b =>
@@ -81,7 +100,7 @@ namespace ClubSystem.Api.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("UserPost");
+                    b.ToTable("UserPosts");
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Models.User", b =>
@@ -247,6 +266,19 @@ namespace ClubSystem.Api.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.ClubPost", b =>
+                {
+                    b.HasOne("ClubSystem.Lib.Models.Entities.Club", "Club")
+                        .WithMany("ClubPosts")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ClubSystem.Lib.Models.Entities.Post", "Post")
+                        .WithMany("ClubPosts")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserClub", b =>
