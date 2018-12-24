@@ -1,3 +1,4 @@
+using System;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
 using ClubSystem.Lib.Models.Entities;
@@ -6,7 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
+using ClubSystem.Lib.Models.Resources;
 
 namespace ClubSystem.Api.Controllers
 {
@@ -29,8 +32,25 @@ namespace ClubSystem.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var allPosts = _postRepository.GetAllPosts();
+            
+            var allPostResources = new Collection<PostResource>();
+            foreach (var post in allPosts)
+            {
+                var postResource = new PostResource
+                {
+                    Id = post.Id,
+                    ClubId = post.ClubPosts.ElementAt(0).ClubId,
+                    CreatedBy = post.UserPosts.ElementAt(0).User,
+                    CreatedDate = post.CreatedDate,
+                    LastEditedBy = null,
+                    LastEditedDate = DateTime.Now,
+                    Text = post.Text,
+                    Title = post.Title
+                };
+                allPostResources.Add(postResource);
+            }
 
-            return Ok(allPosts);
+            return Ok(allPostResources);
         }
 
         [HttpPost]
@@ -38,6 +58,10 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
+            /**
+             * JwtRegisteredClaimNames.Sub => JwtTokenGenerator
+             * line 35 new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+             */
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
             post.UserPosts = new Collection<UserPost> {new UserPost {UserId = user?.Id}};
