@@ -8,6 +8,6 @@ namespace ClubSystem.Lib.Models.Resources
         public User CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public User LastEditedBy { get; set; }
-        public DateTime LastEditedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
     }
 }

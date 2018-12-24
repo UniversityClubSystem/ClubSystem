@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
+using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
+using ClubSystem.Lib.Models.Resources;
 using ClubSystem.Lib.Validators;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +23,10 @@ namespace ClubSystem.Lib.Repository
 
         public Post GetPost(string id)
         {
-            return _context.Posts.Where(post => post.Id == id).Include(post => post.UserPosts).SingleOrDefault();
+            return _context.Posts
+                .Where(post => post.Id == id)
+                .Include(post => post.UserPosts)
+                .SingleOrDefault();
         }
 
         public ICollection<Post> GetAllPosts()
@@ -29,34 +34,62 @@ namespace ClubSystem.Lib.Repository
             return _context.Set<Post>().Include(post => post.UserPosts).ToList();
         }
 
-        public Post AddPost(Post post)
+        public PostResource AddPost(PostDto postDto)
         {
-            if (post == null)
-            {
+            #region Checks
+            if (postDto == null)
                 throw new PostCannotBeNullException();
-            }
 
             var postValidator = new PostValidator();
-            var validationResult = postValidator.Validate(post);
+            var validationResult = postValidator.Validate(postDto);
 
-            if (!validationResult.IsValid) throw new PostIsNotValidException(validationResult.Errors.First().ErrorMessage);
+            if (!validationResult.IsValid)
+                throw new PostIsNotValidException(validationResult.Errors.First().ErrorMessage);
+            #endregion
+
             var newPost = new Post
             {
-                Title = post.Title,
-                Text = post.Text,
+                Title = postDto.Title,
+                Text = postDto.Text,
+                MediaId = postDto.MediaId,
+                UserPosts = new Collection<UserPost>(),
+                ClubPosts = new Collection<ClubPost>(),
                 CreatedDate = DateTime.Now,
-                MediaId = post.MediaId,
-                UserPosts = new Collection<UserPost>()
             };
 
-            foreach (var userPost in post.UserPosts)
+            foreach (var userId in postDto.UserIds)
             {
-                newPost.UserPosts.Add(userPost);
+                newPost.UserPosts.Add(new UserPost { UserId = userId });
+            }
+
+            foreach (var clubId in postDto.ClubIds)
+            {
+                newPost.ClubPosts.Add(new ClubPost { ClubId = clubId });
             }
 
             _context.Posts.Add(newPost);
             _context.SaveChanges();
-            return newPost;
+
+            var postResource = new PostResource
+            {
+                Id = newPost.Id,
+                Text = newPost.Text,
+                Title = newPost.Title,
+                MediaId = newPost.MediaId,
+                Users = new Collection<UserResource>(),
+                // ClubId = newPost.ClubId, // TODO: this could be enabled after Post entity refactor
+                CreatedDate = newPost.CreatedDate,
+                LastModifiedDate = newPost.LastModifiedDate
+            };
+            
+            foreach (var userPost in newPost.UserPosts)
+            {
+                postResource.Users.Add(new UserResource { Id = userPost.UserId, Name = userPost.User?.UserName });
+            }
+
+            var resourceClubId = newPost.ClubPosts?.ToList()[0].ClubId;
+            postResource.ClubId = resourceClubId;
+            return postResource;
         }
     }
 }

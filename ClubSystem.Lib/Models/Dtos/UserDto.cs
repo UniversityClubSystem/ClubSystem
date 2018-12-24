@@ -2,7 +2,7 @@
 
 namespace ClubSystem.Lib
 {
-    class UserDto : BaseDto
+    class UserDto
     {
         public string Name { get; set; }
         public ICollection<ClubDto> Clubs { get; set; }

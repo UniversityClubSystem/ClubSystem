@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
+using ClubSystem.Lib.Models.Resources;
 
 namespace ClubSystem.Lib.Interfaces
 {
@@ -7,6 +9,6 @@ namespace ClubSystem.Lib.Interfaces
     {
         ICollection<Post> GetAllPosts();
         Post GetPost(string id);
-        Post AddPost(Post club);
+        PostResource AddPost(PostDto postDto);
     }
 }

@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using ClubSystem.Lib.Models.Resources;
+using ClubSystem.Lib.Models.Dtos;
 
 namespace ClubSystem.Api.Controllers
 {
@@ -43,7 +44,7 @@ namespace ClubSystem.Api.Controllers
                     CreatedBy = post.UserPosts.ElementAt(0).User,
                     CreatedDate = post.CreatedDate,
                     LastEditedBy = null,
-                    LastEditedDate = DateTime.Now,
+                    LastModifiedDate = DateTime.Now,
                     Text = post.Text,
                     Title = post.Title
                 };
@@ -54,7 +55,7 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPost([FromBody] Post post)
+        public async Task<IActionResult> AddPost([FromBody] PostDto postDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
@@ -64,9 +65,10 @@ namespace ClubSystem.Api.Controllers
              */
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            post.UserPosts = new Collection<UserPost> {new UserPost {UserId = user?.Id}};
+            // postDto.UserPosts = new Collection<UserPost> {new UserPost {UserId = user?.Id}};
+            postDto.UserIds = new Collection<string> { user?.Id };
 
-            var addedPost = _postRepository.AddPost(post);
+            var addedPost = _postRepository.AddPost(postDto);
 
             return Ok(addedPost);
         }
