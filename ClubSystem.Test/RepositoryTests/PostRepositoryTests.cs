@@ -5,7 +5,7 @@ using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Dtos;
-using ClubSystem.Lib.Repository;
+using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -18,9 +18,8 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userIds = new List<string> { "42" };
-            var clubId = "124";
-            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds, ClubId = clubId };
+            var userIds = new List<string> { "42", "45" };
+            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
 
             var addedPost = postRepository.AddPost(post1);
 
@@ -38,8 +37,7 @@ namespace ClubSystem.Test.RepositoryTests
             var postRepository = GetInMemoryPostRepository();
             
             var userIds = new List<string> { "42" };
-            var clubId = "124";
-            var post = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds, ClubId = clubId };
+            var post = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
 
             postRepository.AddPost(post);
             var result = postRepository.GetAllPosts();
@@ -54,12 +52,10 @@ namespace ClubSystem.Test.RepositoryTests
             var postRepository = GetInMemoryPostRepository();
 
             var userIds1 = new List<string> { "42" };
-            var clubId1 = "124";
-            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds1, ClubId = clubId1 };
+            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
 
             var userIds2 = new List<string> { "214" };
-            var clubId2 = "124";
-            var post2 = new PostDto { Title = "Title2", Text = "Text2", MediaId = "452645", UserIds = userIds2, ClubId = clubId2 };
+            var post2 = new PostDto { Title = "Title2", Text = "Text2", MediaId = "452645", UserIds = userIds2, ClubId = "124" };
 
             postRepository.AddPost(post1);
             postRepository.AddPost(post2);
@@ -93,13 +89,11 @@ namespace ClubSystem.Test.RepositoryTests
         {
             IPostRepository postRepository = GetInMemoryPostRepository();
 
-            var userIds1 = new List<string> { "42" };
-            var clubId1 = "124";
-            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds1, ClubId = clubId1 };
+            var userIds1 = new List<string> { "42", "45" };
+            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
 
             var userIds2 = new List<string> { "214" };
-            var clubId2 = "312";
-            var post2 = new PostDto { Title = "Title2", Text = "Text2", MediaId = "452645", UserIds = userIds2, ClubId = clubId2 };
+            var post2 = new PostDto { Title = "Title2", Text = "Text2", MediaId = "452645", UserIds = userIds2, ClubId = "312" };
 
             var addedPost1 = postRepository.AddPost(post1);
             var addedPost2 = postRepository.AddPost(post2);

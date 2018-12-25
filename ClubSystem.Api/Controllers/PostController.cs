@@ -32,24 +32,24 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var allPosts = _postRepository.GetAllPosts();
+            var allPostResources = _postRepository.GetAllPosts();
             
-            var allPostResources = new Collection<PostResource>();
-            foreach (var post in allPosts)
-            {
-                var postResource = new PostResource
-                {
-                    Id = post.Id,
-                    ClubId = post.Club.Id,
-                    CreatedBy = post.UserPosts.ElementAt(0).User,
-                    CreatedDate = post.CreatedDate,
-                    LastEditedBy = null,
-                    LastModifiedDate = DateTime.Now,
-                    Text = post.Text,
-                    Title = post.Title
-                };
-                allPostResources.Add(postResource);
-            }
+            //var allPostResources = new Collection<PostResource>();
+            //foreach (var post in allPosts)
+            //{
+            //    var postResource = new PostResource
+            //    {
+            //        Id = post.Id,
+            //        ClubId = post.Club.Id,
+            //        CreatedBy = post.UserPosts.ElementAt(0).User,
+            //        CreatedDate = post.CreatedDate,
+            //        LastEditedBy = null,
+            //        LastModifiedDate = DateTime.Now,
+            //        Text = post.Text,
+            //        Title = post.Title
+            //    };
+            //    allPostResources.Add(postResource);
+            //}
 
             return Ok(allPostResources);
         }

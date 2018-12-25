@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ClubSystem.Lib.Repository
+namespace ClubSystem.Lib.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {

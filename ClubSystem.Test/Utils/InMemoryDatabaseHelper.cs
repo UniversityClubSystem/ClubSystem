@@ -1,5 +1,5 @@
 ﻿using ClubSystem.Lib;
-using ClubSystem.Lib.Repository;
+using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 

@@ -3,7 +3,7 @@ using System.Text;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
-using ClubSystem.Lib.Repository;
+using ClubSystem.Lib.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,13 +35,7 @@ namespace ClubSystem.Api
                     Configuration.GetConnectionString("AzureStudentSqlServer"),
                     b => b.MigrationsAssembly("ClubSystem.Api")
                 ));
-
-            //services.AddDbContext<ClubSystemDbContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration.GetConnectionString("AzureStudentIdentityDb"),
-            //        b => b.MigrationsAssembly("ClubSystem.Api")
-            //    ));
-
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info

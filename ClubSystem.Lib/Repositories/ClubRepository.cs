@@ -6,7 +6,7 @@ using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Validators;
 
-namespace ClubSystem.Lib.Repository
+namespace ClubSystem.Lib.Repositories
 {
     public class ClubRepository : Repository<Club>, IClubRepository
     {
