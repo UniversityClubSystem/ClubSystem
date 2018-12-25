@@ -9,12 +9,13 @@ namespace ClubSystem.Lib.Models.Entities
         public string Text { get; set; }
         public string MediaId { get; set; } // TODO: change int => string
         public ICollection<UserPost> UserPosts { get; set; }
-        public ICollection<ClubPost> ClubPosts { get; set; } // TODO: change ICollection => string, a post can have only one club 
+        // public ICollection<ClubPost> ClubPosts { get; set; } // TODO: change ICollection => string, a post can have only one club
+        public Club Club { get; set; }
 
         public Post()
         {
             UserPosts = new Collection<UserPost>();
-            ClubPosts = new Collection<ClubPost>();
+            // ClubPosts = new Collection<ClubPost>();
         }
     }
 }

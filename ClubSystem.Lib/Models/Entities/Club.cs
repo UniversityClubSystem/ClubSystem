@@ -12,12 +12,12 @@ namespace ClubSystem.Lib.Models.Entities
         public string Name { get; set; }
         public string UniversityName { get; set; }
         public ICollection<UserClub> UserClubs { get; set; }
-        public ICollection<ClubPost> ClubPosts { get; set; }
+        public ICollection<Club> Clubs { get; set; }
 
         public Club()
         {
             UserClubs = new Collection<UserClub>();
-            ClubPosts = new Collection<ClubPost>();
+            Clubs = new Collection<Club>();
         }
     }
 }

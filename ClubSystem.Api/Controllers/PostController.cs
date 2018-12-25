@@ -40,7 +40,7 @@ namespace ClubSystem.Api.Controllers
                 var postResource = new PostResource
                 {
                     Id = post.Id,
-                    ClubId = post.ClubPosts.ElementAt(0).ClubId,
+                    ClubId = post.Club.Id,
                     CreatedBy = post.UserPosts.ElementAt(0).User,
                     CreatedDate = post.CreatedDate,
                     LastEditedBy = null,

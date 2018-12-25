@@ -53,7 +53,7 @@ namespace ClubSystem.Lib.Repository
                 Text = postDto.Text,
                 MediaId = postDto.MediaId,
                 UserPosts = new Collection<UserPost>(),
-                ClubPosts = new Collection<ClubPost>(),
+                Club = new Club { Id = postDto.ClubId },
                 CreatedDate = DateTime.Now,
             };
 
@@ -62,10 +62,10 @@ namespace ClubSystem.Lib.Repository
                 newPost.UserPosts.Add(new UserPost { UserId = userId });
             }
 
-            foreach (var clubId in postDto.ClubIds)
-            {
-                newPost.ClubPosts.Add(new ClubPost { ClubId = clubId });
-            }
+            //foreach (var clubId in postDto.ClubIds)
+            //{
+            //    newPost.ClubPosts.Add(new ClubPost { ClubId = clubId });
+            //}
 
             _context.Posts.Add(newPost);
             _context.SaveChanges();
@@ -77,7 +77,7 @@ namespace ClubSystem.Lib.Repository
                 Title = newPost.Title,
                 MediaId = newPost.MediaId,
                 Users = new Collection<UserResource>(),
-                // ClubId = newPost.ClubId, // TODO: this could be enabled after Post entity refactor
+                ClubId = newPost.Club?.Id, // TODO: this could be enabled after Post entity refactor
                 CreatedDate = newPost.CreatedDate,
                 LastModifiedDate = newPost.LastModifiedDate
             };
@@ -87,8 +87,8 @@ namespace ClubSystem.Lib.Repository
                 postResource.Users.Add(new UserResource { Id = userPost.UserId, Name = userPost.User?.UserName });
             }
 
-            var resourceClubId = newPost.ClubPosts?.ToList()[0].ClubId;
-            postResource.ClubId = resourceClubId;
+            //var resourceClubId = newPost.ClubPosts?.ToList()[0].ClubId;
+            //postResource.ClubId = resourceClubId;
             return postResource;
         }
     }

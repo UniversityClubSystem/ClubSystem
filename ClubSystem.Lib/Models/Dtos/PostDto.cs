@@ -8,6 +8,6 @@ namespace ClubSystem.Lib.Models.Dtos
         public string Text { get; set; }
         public string MediaId { get; set; }
         public ICollection<string> UserIds { get; set; }
-        public ICollection<string> ClubIds { get; set; }
+        public string ClubId { get; set; }
     }
 }
