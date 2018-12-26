@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ClubSystem.Lib
+namespace ClubSystem.Lib.Models.Dtos
 {
     class UserDto
     {

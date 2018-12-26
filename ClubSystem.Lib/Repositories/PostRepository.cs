@@ -3,10 +3,10 @@ using System.Linq;
 using AutoMapper;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
+using ClubSystem.Lib.MapProfiles;
 using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Models.Resources;
-using ClubSystem.Lib.Repositories.MapProfiles;
 using ClubSystem.Lib.Validators;
 using Microsoft.EntityFrameworkCore;
 

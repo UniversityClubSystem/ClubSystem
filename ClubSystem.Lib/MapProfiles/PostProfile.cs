@@ -5,7 +5,7 @@ using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Models.Resources;
 
-namespace ClubSystem.Lib.Repositories.MapProfiles
+namespace ClubSystem.Lib.MapProfiles
 {
     public class PostProfile : Profile
     {
