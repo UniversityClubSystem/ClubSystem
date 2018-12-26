@@ -44,7 +44,7 @@ namespace ClubSystem.Test.RepositoryTests
             var result = postRepository.GetAllPosts();
             
             Assert.Equal(1, result.Count);
-            // Assert.Equal(result.First().ClubId, post.ClubId); TODO: GetAllPosts sýnýfýna ClubId eklendiðinde aktifleþtirilecek.
+            Assert.Equal(result.First().ClubId, post.ClubId);
         }
 
         [Fact]
