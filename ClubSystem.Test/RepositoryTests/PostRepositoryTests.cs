@@ -7,6 +7,7 @@ using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace ClubSystem.Test.RepositoryTests
@@ -59,9 +60,13 @@ namespace ClubSystem.Test.RepositoryTests
 
             postRepository.AddPost(post1);
             postRepository.AddPost(post2);
-            var result = postRepository.GetAllPosts();
+            var response = postRepository.GetAllPosts();
             
-            Assert.Equal(2, result.Count);
+            Assert.Equal(2, response.Count);
+            Assert.Equal(response.First(x => x.Title == post1.Title).Title, post1.Title);
+            Assert.Equal(response.First(x => x.Title == post1.Title).MediaId, post1.MediaId);
+            Assert.Equal(response.First(x => x.Title == post2.Title).Title, post2.Title);
+            Assert.Equal(response.First(x => x.Title == post2.Title).MediaId, post2.MediaId);
         }
 
         [Fact]
@@ -101,8 +106,11 @@ namespace ClubSystem.Test.RepositoryTests
 
             Assert.NotNull(addedPost1.Id);
             Assert.NotNull(response);
-            //Assert.NotEqual(response, addedPost2);
-            //Assert.Equal(response, addedPost1);
+            Assert.NotEqual(response, addedPost2);
+
+            var responseJSON = JsonConvert.SerializeObject(response);
+            var addedPost1JSON = JsonConvert.SerializeObject(addedPost1);
+            Assert.Equal(responseJSON, addedPost1JSON);
         }
 
         private IPostRepository GetInMemoryPostRepository()
