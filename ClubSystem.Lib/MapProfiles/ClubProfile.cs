@@ -10,10 +10,10 @@ namespace ClubSystem.Lib.MapProfiles
     {
         public ClubProfile()
         {
-            // TODO: implement mapping details
             CreateMap<ClubDto, Club>()
-                .ForMember(club => club.UserClubs, p => p.MapFrom(clubDto => clubDto.Users.Select(userDto => new UserClub{UserId = userDto.UserId})));
-            CreateMap<Club, ClubResource>();
+                .ForMember(club => club.UserClubs, p => p.MapFrom(clubDto => clubDto.Members.Select(userDto => new UserClub{UserId = userDto.UserId})));
+            CreateMap<Club, ClubResource>()
+                .ForMember(club => club.Members, p => p.MapFrom(club => club.UserClubs.Select(userClub => new UserResource { Id = userClub.UserId })));
         }
     }
 }

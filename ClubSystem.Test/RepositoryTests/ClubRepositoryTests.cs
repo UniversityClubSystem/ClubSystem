@@ -20,15 +20,34 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var clubRepository = GetInMemoryClubRepository();
 
-            var users = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Users = users};
+            var members = new List<UserDto> {new UserDto {UserId = "5"}};
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University14", Members = members};
 
             var addedClub = clubRepository.AddClub(club1);
 
             Assert.NotNull(addedClub);
             Assert.Equal(addedClub.Name, club1.Name);
             Assert.Equal(addedClub.UniversityName, club1.UniversityName);
-            // Assert.Equal(addedClub.UserClubs, club1.UserClubs);
+            foreach (var member in addedClub.Members)
+            {
+                Assert.Equal(member.Id, club1.Members.Single(club => club.Name == member.Name).UserId);
+            }
+        }
+
+        [Fact]
+        public void ShouldAddAdvancedClub()
+        {
+            var clubRepository = GetInMemoryClubRepository();
+
+            var members = new List<UserDto> { new UserDto { UserId = "5" , Name = "username1"} };
+            var club1 = new ClubDto { Name = "Name1", UniversityName = "University14", Members = members };
+
+            var addedClub = clubRepository.AddClub(club1);
+
+            Assert.NotNull(addedClub);
+            Assert.Equal(addedClub.Name, club1.Name);
+            Assert.Equal(addedClub.UniversityName, club1.UniversityName);
+            // TODO: addedClub.members and club1.members will be compared
         }
 
         [Fact]
@@ -37,7 +56,7 @@ namespace ClubSystem.Test.RepositoryTests
             var clubRepository = GetInMemoryClubRepository();
 
             var users = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Users = users};
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Members = users};
 
             clubRepository.AddClub(club1);
             var result = clubRepository.GetAllClubs();
@@ -51,10 +70,10 @@ namespace ClubSystem.Test.RepositoryTests
             var clubRepository = GetInMemoryClubRepository();
 
             var users1 = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Users = users1};
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Members = users1};
 
             var users2 = new List<UserDto> {new UserDto {UserId = "6"}};
-            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2", Users = users2};
+            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2", Members = users2};
 
             clubRepository.AddClub(club1);
             clubRepository.AddClub(club2);
@@ -89,10 +108,10 @@ namespace ClubSystem.Test.RepositoryTests
             IClubRepository clubRepository = GetInMemoryClubRepository();
 
             var users1 = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Users = users1};
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Members = users1};
 
             var users2 = new List<UserDto> {new UserDto {UserId = "6"}};
-            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2", Users = users2};
+            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2", Members = users2};
 
             var addedClub1 = clubRepository.AddClub(club1);
             var addedClub2 = clubRepository.AddClub(club2);

@@ -6,6 +6,6 @@ namespace ClubSystem.Lib.Models.Dtos
     {
         public string Name { get; set; }
         public string UniversityName { get; set; }
-        public ICollection<UserDto> Users { get; set; }
+        public ICollection<UserDto> Members { get; set; }
     }
 }
