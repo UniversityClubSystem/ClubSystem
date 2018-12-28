@@ -20,13 +20,13 @@ namespace ClubSystem.Test.RepositoryTests
             var postRepository = GetInMemoryPostRepository();
 
             var userIds = new List<string> { "42", "45" };
-            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
+            var post1 = new PostDto { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
 
             var addedPost = postRepository.AddPost(post1);
 
             Assert.NotNull(addedPost);
             Assert.Equal(addedPost.Title, post1.Title);
-            Assert.Equal(addedPost.Text, post1.Text);
+            Assert.Equal(addedPost.Content, post1.Content);
             var addedUserIds = addedPost.Users.Select(p => p.Id).ToList();
             Assert.Equal(addedUserIds, post1.UserIds);
             Assert.Equal(addedPost.ClubId, post1.ClubId);
@@ -38,7 +38,7 @@ namespace ClubSystem.Test.RepositoryTests
             var postRepository = GetInMemoryPostRepository();
             
             var userIds = new List<string> { "42" };
-            var post = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
+            var post = new PostDto { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
 
             postRepository.AddPost(post);
             var result = postRepository.GetAllPosts();
@@ -53,10 +53,10 @@ namespace ClubSystem.Test.RepositoryTests
             var postRepository = GetInMemoryPostRepository();
 
             var userIds1 = new List<string> { "42" };
-            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
+            var post1 = new PostDto { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
 
             var userIds2 = new List<string> { "214" };
-            var post2 = new PostDto { Title = "Title2", Text = "Text2", MediaId = "452645", UserIds = userIds2, ClubId = "124" };
+            var post2 = new PostDto { Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "124" };
 
             postRepository.AddPost(post1);
             postRepository.AddPost(post2);
@@ -95,10 +95,10 @@ namespace ClubSystem.Test.RepositoryTests
             IPostRepository postRepository = GetInMemoryPostRepository();
 
             var userIds1 = new List<string> { "42", "45" };
-            var post1 = new PostDto { Title = "Title1", Text = "Text1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
+            var post1 = new PostDto { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
 
             var userIds2 = new List<string> { "214" };
-            var post2 = new PostDto { Title = "Title2", Text = "Text2", MediaId = "452645", UserIds = userIds2, ClubId = "312" };
+            var post2 = new PostDto { Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "312" };
 
             var addedPost1 = postRepository.AddPost(post1);
             var addedPost2 = postRepository.AddPost(post2);
@@ -108,16 +108,15 @@ namespace ClubSystem.Test.RepositoryTests
             Assert.NotNull(response);
             Assert.NotEqual(response, addedPost2);
 
-            var responseJSON = JsonConvert.SerializeObject(response);
-            var addedPost1JSON = JsonConvert.SerializeObject(addedPost1);
-            Assert.Equal(responseJSON, addedPost1JSON);
+            var responseJson = JsonConvert.SerializeObject(response);
+            var addedPost1Json = JsonConvert.SerializeObject(addedPost1);
+            Assert.Equal(responseJson, addedPost1Json);
         }
 
         private IPostRepository GetInMemoryPostRepository()
         {
-            DbContextOptions<ClubSystemDbContext> options;
             var builder = new DbContextOptionsBuilder<ClubSystemDbContext>();
-            options = builder.UseInMemoryDatabase(new Guid().ToString()).Options;
+            var options = builder.UseInMemoryDatabase(new Guid().ToString()).Options;
 
             ClubSystemDbContext clubSystemDbContext = new ClubSystemDbContext(options);
             clubSystemDbContext.Database.EnsureDeleted();

@@ -8,7 +8,7 @@ namespace ClubSystem.Lib.Validators
         public PostValidator()
         {
             RuleFor(x => x.Title).NotEmpty();
-            RuleFor(x => x.Text).NotEmpty();
+            RuleFor(x => x.Content).NotEmpty();
             RuleFor(x => x.UserIds).NotEmpty();
         }
     }

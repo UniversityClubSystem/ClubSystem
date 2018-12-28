@@ -2,8 +2,9 @@
 
 namespace ClubSystem.Lib.Models.Dtos
 {
-    class UserDto
+    public class UserDto
     {
+        public string UserId { get; set; }
         public string Name { get; set; }
         public ICollection<ClubDto> Clubs { get; set; }
     }

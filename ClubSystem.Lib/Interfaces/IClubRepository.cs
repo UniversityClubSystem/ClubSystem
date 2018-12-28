@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
+using ClubSystem.Lib.Models.Resources;
 
 namespace ClubSystem.Lib.Interfaces
 {
     public interface IClubRepository : IRepository<Club>
     {
-        IEnumerable<Club> GetAllClubs();
-        Club GetClub(string id);
-        Club AddClub(Club club);
+        IEnumerable<ClubResource> GetAllClubs();
+        ClubResource GetClub(string id);
+        ClubResource AddClub(ClubDto clubDto);
     }
 }

@@ -34,23 +34,6 @@ namespace ClubSystem.Api.Controllers
 
             var allPostResources = _postRepository.GetAllPosts();
             
-            //var allPostResources = new Collection<PostResource>();
-            //foreach (var post in allPosts)
-            //{
-            //    var postResource = new PostResource
-            //    {
-            //        Id = post.Id,
-            //        ClubId = post.Club.Id,
-            //        CreatedBy = post.UserPosts.ElementAt(0).User,
-            //        CreatedDate = post.CreatedDate,
-            //        LastEditedBy = null,
-            //        LastModifiedDate = DateTime.Now,
-            //        Text = post.Text,
-            //        Title = post.Title
-            //    };
-            //    allPostResources.Add(postResource);
-            //}
-
             return Ok(allPostResources);
         }
 
@@ -65,7 +48,6 @@ namespace ClubSystem.Api.Controllers
              */
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            // postDto.UserPosts = new Collection<UserPost> {new UserPost {UserId = user?.Id}};
             postDto.UserIds = new Collection<string> { user?.Id };
 
             var addedPost = _postRepository.AddPost(postDto);

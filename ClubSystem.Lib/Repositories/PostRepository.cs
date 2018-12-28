@@ -30,7 +30,7 @@ namespace ClubSystem.Lib.Repositories
 
         public PostResource GetPost(string id)
         {
-            var post = _context.Set<Post>().Where(x => x.Id == id).SingleOrDefault();
+            var post = _context.Set<Post>().SingleOrDefault(x => x.Id == id);
 
             return _mapper.Map<PostResource>(post);
         }

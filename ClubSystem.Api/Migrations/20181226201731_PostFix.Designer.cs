@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    [Migration("20181225120719_PostDtoResource")]
-    partial class PostDtoResource
+    [Migration("20181226201731_PostFix")]
+    partial class PostFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,8 +26,6 @@ namespace ClubSystem.Api.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClubId");
-
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<DateTime>("LastModifiedDate");
@@ -39,8 +37,6 @@ namespace ClubSystem.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClubId");
-
                     b.ToTable("Clubs");
                 });
 
@@ -51,6 +47,8 @@ namespace ClubSystem.Api.Migrations
 
                     b.Property<string>("ClubId");
 
+                    b.Property<string>("Content");
+
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<DateTime>("LastModifiedDate");
@@ -58,8 +56,6 @@ namespace ClubSystem.Api.Migrations
                     b.Property<string>("MediaId");
 
                     b.Property<string>("Text");
-
-                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
@@ -259,17 +255,10 @@ namespace ClubSystem.Api.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.Club", b =>
-                {
-                    b.HasOne("ClubSystem.Lib.Models.Entities.Club")
-                        .WithMany("Clubs")
-                        .HasForeignKey("ClubId");
-                });
-
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.Post", b =>
                 {
                     b.HasOne("ClubSystem.Lib.Models.Entities.Club", "Club")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("ClubId");
                 });
 
