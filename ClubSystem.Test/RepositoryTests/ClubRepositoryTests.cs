@@ -8,6 +8,7 @@ using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace ClubSystem.Test.RepositoryTests
@@ -98,7 +99,9 @@ namespace ClubSystem.Test.RepositoryTests
             var response = clubRepository.GetClub(addedClub1.Id);
 
             Assert.NotEqual(response, addedClub2);
-            Assert.Equal(response, addedClub1);
+            var responseJson = JsonConvert.SerializeObject(response);
+            var addedClub1Json = JsonConvert.SerializeObject(addedClub1);
+            Assert.Equal(responseJson, addedClub1Json);
         }
 
         private IClubRepository GetInMemoryClubRepository()

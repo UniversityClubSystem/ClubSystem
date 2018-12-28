@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
+using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,15 +43,16 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddClub([FromBody] Club club)
+        public async Task<IActionResult> AddClub([FromBody] ClubDto clubDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            club.UserClubs = new Collection<UserClub> {new UserClub {UserId = user?.Id}};
+            //clubDto.UserClubs = new Collection<UserClub> {new UserClub {UserId = user?.Id}};
+            clubDto.Users = new Collection<UserDto> { new UserDto { UserId = user?.Id } };
 
-            var newClub = _clubRepository.AddClub(club);
+            var newClub = _clubRepository.AddClub(clubDto);
 
             return Ok(newClub);
         }
