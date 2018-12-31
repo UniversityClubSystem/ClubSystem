@@ -175,8 +175,8 @@ namespace ClubSystem.Api.Migrations
                     Id = table.Column<string>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
-                    Text = table.Column<string>(nullable: true),
                     MediaId = table.Column<string>(nullable: true),
                     ClubId = table.Column<string>(nullable: true)
                 },

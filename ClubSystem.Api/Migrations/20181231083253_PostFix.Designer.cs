@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    [Migration("20181226201731_PostFix")]
+    [Migration("20181231083253_PostFix")]
     partial class PostFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace ClubSystem.Api.Migrations
 
                     b.Property<string>("MediaId");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 

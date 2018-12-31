@@ -53,7 +53,7 @@ namespace ClubSystem.Api.Migrations
 
                     b.Property<string>("MediaId");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
