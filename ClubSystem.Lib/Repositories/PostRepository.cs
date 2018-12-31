@@ -31,15 +31,27 @@ namespace ClubSystem.Lib.Repositories
         public PostResource GetPost(string id)
         {
             var post = _context.Set<Post>().SingleOrDefault(x => x.Id == id);
+            var club = _context.Clubs.Find(post?.ClubId);
 
-            return _mapper.Map<PostResource>(post);
+            var postResource = _mapper.Map<PostResource>(post);
+            postResource.ClubName = club.Name;
+
+            return postResource;
         }
 
         public ICollection<PostResource> GetAllPosts()
         {
             var posts = _context.Set<Post>().Include(post => post.UserPosts).ToList();
+            
+            var postResources = posts.Select(post => _mapper.Map<PostResource>(post)).ToList();
+            var allClubs = _context.Clubs.ToList();
+            
+            foreach (var postResource in postResources)
+            {
+                postResource.ClubName = allClubs.Find(club => club.Id == postResource.ClubId).Name;
+            }
 
-            return posts.Select(post => _mapper.Map<PostResource>(post)).ToList();
+            return postResources;
         }
 
         public PostResource AddPost(PostDto postDto)
