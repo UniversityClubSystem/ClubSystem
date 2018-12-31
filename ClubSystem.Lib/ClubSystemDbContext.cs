@@ -34,6 +34,7 @@ namespace ClubSystem.Lib
             modelBuilder.Entity<UserClub>()
                 .HasKey(up => new {up.UserId, up.ClubId});
 
+            /*
             modelBuilder.Entity<UserClub>()
                 .HasOne(up => up.User)
                 .WithMany(u => u.UserClubs)
@@ -43,19 +44,7 @@ namespace ClubSystem.Lib
                 .HasOne(up => up.Club)
                 .WithMany(u => u.UserClubs)
                 .HasForeignKey(up => up.ClubId);
-
-            //modelBuilder.Entity<ClubPost>()
-            //    .HasKey(cp => new {cp.ClubId, cp.PostId});
-
-            //modelBuilder.Entity<ClubPost>()
-            //    .HasOne(cp => cp.Club)
-            //    .WithMany(c => c.ClubPosts)
-            //    .HasForeignKey(cp => cp.ClubId);
-
-            //modelBuilder.Entity<ClubPost>()
-            //    .HasOne(cp => cp.Post)
-            //    .WithMany(c => c.ClubPosts)
-            //    .HasForeignKey(cp => cp.PostId);
+            */
         }
     }
 }

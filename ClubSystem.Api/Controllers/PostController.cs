@@ -37,11 +37,12 @@ namespace ClubSystem.Api.Controllers
             return Ok(allPostResources);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddPost([FromBody] PostDto postDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
+            // TODO: move this logic to service !!!important!!!
             /**
              * JwtRegisteredClaimNames.Sub => JwtTokenGenerator
              * line 35 new Claim(JwtRegisteredClaimNames.Sub, user.Id)

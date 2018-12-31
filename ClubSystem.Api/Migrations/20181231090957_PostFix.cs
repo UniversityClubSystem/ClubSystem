@@ -54,7 +54,7 @@ namespace ClubSystem.Api.Migrations
                     Id = table.Column<string>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     UniversityName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

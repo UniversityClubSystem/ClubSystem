@@ -28,8 +28,7 @@ namespace ClubSystem.Api.Migrations
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.Property<string>("UniversityName");
 
