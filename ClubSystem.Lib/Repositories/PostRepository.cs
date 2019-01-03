@@ -34,7 +34,10 @@ namespace ClubSystem.Lib.Repositories
             var club = _context.Clubs.Find(post?.ClubId);
 
             var postResource = _mapper.Map<PostResource>(post);
-            postResource.ClubName = club.Name;
+            if (club != null)
+            {
+                postResource.ClubName = club.Name;
+            }
 
             return postResource;
         }
@@ -45,10 +48,15 @@ namespace ClubSystem.Lib.Repositories
             
             var postResources = posts.Select(post => _mapper.Map<PostResource>(post)).ToList();
             var allClubs = _context.Clubs.ToList();
-            
+
+            if (allClubs.Count <= 0) return postResources;
             foreach (var postResource in postResources)
             {
-                postResource.ClubName = allClubs.Find(club => club.Id == postResource.ClubId).Name;
+                var foundedClub = allClubs.Find(club => club.Id == postResource.ClubId);
+                if (foundedClub != null)
+                {
+                    postResource.ClubName = foundedClub.Name;
+                }
             }
 
             return postResources;

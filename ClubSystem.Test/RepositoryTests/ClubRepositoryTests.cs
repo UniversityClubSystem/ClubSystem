@@ -5,7 +5,6 @@ using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models.Dtos;
-using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
