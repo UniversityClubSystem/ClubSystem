@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
@@ -111,6 +112,62 @@ namespace ClubSystem.Test.RepositoryTests
             var responseJson = JsonConvert.SerializeObject(response);
             var addedPost1Json = JsonConvert.SerializeObject(addedPost1);
             Assert.Equal(responseJson, addedPost1Json);
+        }
+
+        [Fact]
+        public async Task ShouldGetEmptyPostFeed()
+        {
+            // Arrange
+            var postRepository = GetInMemoryPostRepository();
+            
+            // Act
+            var postResponse = await postRepository.GetMyPostFeedAsync("1234");
+            
+            // Assert
+            Assert.Empty(postResponse);
+        }
+        
+        [Fact]
+        public async Task ShouldGetPostFeedWithOnePost()
+        {
+            // Arrange
+            var postRepository = GetInMemoryPostRepository();
+            
+            var userIds1 = new List<string> { "42", "45" };
+            var userIds2 = new List<string> { "43", "45" };
+            var post1 = new PostDto { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "4" };
+            var post2 = new PostDto { Title = "Title2", Content = "Content2", MediaId = "542", UserIds = userIds1, ClubId = "3" };
+            var post3 = new PostDto { Title = "Title3", Content = "Content3", MediaId = "56", UserIds = userIds2, ClubId = "5" };
+            var post4 = new PostDto { Title = "Title4", Content = "Content4", MediaId = "6758", UserIds = userIds1, ClubId = "3" };
+
+            var addedPost1 = postRepository.AddPost(post1);
+            var addedPost2 = postRepository.AddPost(post2);
+            var addedPost3 = postRepository.AddPost(post3);
+            var addedPost4 = postRepository.AddPost(post4);
+            
+            if (addedPost1.Users.ElementAt(0) != null)
+            {
+                // Act
+                var postResponse1 = await postRepository.GetMyPostFeedAsync(userIds2.ElementAt(0)); // user with userId 43
+                var postResponse2 = await postRepository.GetMyPostFeedAsync(userIds1.ElementAt(0)); // user with userId 42
+              
+                // Assert
+                Assert.Single(postResponse1);
+                Assert.Equal(3, postResponse2.Count);
+            }
+        }
+        
+        [Fact]
+        public async Task ShouldGetPostFeedCorrect()
+        {
+            // Arrange
+            var postRepository = GetInMemoryPostRepository();
+
+            // Act
+            var postResponse = await postRepository.GetMyPostFeedAsync("1234");
+
+            // Assert
+            Assert.Equal(2, postResponse.Count);
         }
 
         private IPostRepository GetInMemoryPostRepository()

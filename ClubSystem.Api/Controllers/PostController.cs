@@ -1,16 +1,12 @@
-using System;
+using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
-using ClubSystem.Lib.Models.Entities;
+using ClubSystem.Lib.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.ObjectModel;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
-using ClubSystem.Lib.Models.Resources;
-using ClubSystem.Lib.Models.Dtos;
 
 namespace ClubSystem.Api.Controllers
 {
@@ -33,7 +29,7 @@ namespace ClubSystem.Api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var allPostResources = _postRepository.GetAllPosts();
-            
+
             return Ok(allPostResources);
         }
 
@@ -41,7 +37,7 @@ namespace ClubSystem.Api.Controllers
         public async Task<IActionResult> AddPost([FromBody] PostDto postDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            
+
             // TODO: move this logic to service !!!important!!!
             /**
              * JwtRegisteredClaimNames.Sub => JwtTokenGenerator
@@ -49,11 +45,18 @@ namespace ClubSystem.Api.Controllers
              */
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            postDto.UserIds = new Collection<string> { user?.Id };
+            postDto.UserIds = new Collection<string> {user?.Id};
 
             var addedPost = _postRepository.AddPost(postDto);
 
             return Ok(addedPost);
+        }
+
+        [HttpGet("postFeed/{userId}"), Authorize]
+        public async Task<IActionResult> GetMyPostFeed(string userId)
+        {
+            var postResource = await _postRepository.GetMyPostFeedAsync(userId);
+            return Ok(postResource);
         }
 
         [HttpGet("{id}")]

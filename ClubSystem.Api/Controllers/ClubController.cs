@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
@@ -21,16 +20,15 @@ namespace ClubSystem.Api.Controllers
             _clubRepository = clubRepository;
             _userManager = userManager;
         }
-        
+
         [HttpPost, Authorize]
         public async Task<IActionResult> AddClub([FromBody] ClubDto clubDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            
+
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            //clubDto.UserClubs = new Collection<UserClub> {new UserClub {UserId = user?.Id}};
-            clubDto.Members = new Collection<UserDto> { new UserDto { UserId = user?.Id } };
+            clubDto.CreatedBy = user?.Id;
 
             var newClub = _clubRepository.AddClub(clubDto);
 
@@ -56,7 +54,7 @@ namespace ClubSystem.Api.Controllers
 
             return Ok(user);
         }
-        
+
         [HttpGet("byUser/{id}"), Authorize]
         public IActionResult GetClubsByUser(string id)
         {
@@ -66,7 +64,7 @@ namespace ClubSystem.Api.Controllers
 
             return Ok(clubs);
         }
-        
+
         [HttpGet("byUser/current"), Authorize]
         public IActionResult GetClubsByCurrentUser()
         {
@@ -75,6 +73,13 @@ namespace ClubSystem.Api.Controllers
             var clubs = _clubRepository.GetClubsByCurrentUser(User);
 
             return Ok(clubs);
+        }
+
+        [HttpPost("join"), Authorize]
+        public IActionResult AddUserToClub([FromBody] AddUserToClubDto addUserToClubDto)
+        {
+            var result = _clubRepository.AddUserToClub(addUserToClubDto);
+            return Ok(result);
         }
     }
 }

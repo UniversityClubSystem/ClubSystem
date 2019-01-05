@@ -14,5 +14,6 @@ namespace ClubSystem.Lib.Interfaces
         ClubResource AddClub(ClubDto clubDto);
         IEnumerable<ClubResource> GetClubsByUser(string id);
         IEnumerable<ClubResource> GetClubsByCurrentUser(ClaimsPrincipal claimsPrincipal);
+        Task<ClubResource> AddUserToClub(AddUserToClubDto addUserToClubDto);
     }
 }

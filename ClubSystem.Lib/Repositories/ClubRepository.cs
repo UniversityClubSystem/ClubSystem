@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.JsonWebTokens;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.MapProfiles;
-using ClubSystem.Lib.Models;
 using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Models.Resources;
 using ClubSystem.Lib.Validators;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ClubSystem.Lib.Repositories
 {
@@ -77,9 +76,20 @@ namespace ClubSystem.Lib.Repositories
         public IEnumerable<ClubResource> GetClubsByCurrentUser(ClaimsPrincipal claimsPrincipal)
         {
             var userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-            var clubs = _context.Clubs.Where(club => club.UserClubs.Any(userClub => userClub.UserId == userId)).ToList();
+            var clubs = _context.Clubs.Where(club => club.UserClubs.Any(userClub => userClub.UserId == userId))
+                .ToList();
 
             return clubs.Select(club => _mapper.Map<ClubResource>(club)).ToList();
+        }
+
+        public async Task<ClubResource> AddUserToClub(AddUserToClubDto addUserToClubDto)
+        {
+            var club = await _context.Clubs.FindAsync(addUserToClubDto.ClubId);
+            club.UserClubs.Add(new UserClub {UserId = addUserToClubDto.UserId});
+            await _context.SaveChangesAsync();
+
+            var clubResource = _mapper.Map<ClubResource>(club);
+            return clubResource;
         }
     }
 }

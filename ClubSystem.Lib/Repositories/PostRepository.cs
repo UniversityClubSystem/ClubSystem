@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
@@ -21,10 +24,7 @@ namespace ClubSystem.Lib.Repositories
         {
             _context = context;
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<PostProfile>();
-            });
+            var config = new MapperConfiguration(cfg => { cfg.AddProfile<PostProfile>(); });
             _mapper = config.CreateMapper();
         }
 
@@ -45,7 +45,7 @@ namespace ClubSystem.Lib.Repositories
         public ICollection<PostResource> GetAllPosts()
         {
             var posts = _context.Set<Post>().Include(post => post.UserPosts).ToList();
-            
+
             var postResources = posts.Select(post => _mapper.Map<PostResource>(post)).ToList();
             var allClubs = _context.Clubs.ToList();
 
@@ -62,9 +62,53 @@ namespace ClubSystem.Lib.Repositories
             return postResources;
         }
 
+        /// <summary>
+        /// This method gets PostResources of given clubIds
+        /// </summary>
+        /// <param name="clubIds">Collection of clubIds of requested posts.</param>
+        /// <returns>A collection of PostResource</returns>
+        /// <exception cref="Exception">When clubId has no post</exception>
+        public async Task<ICollection<PostResource>> GetPostByClubIds(IEnumerable<string> clubIds)
+        {
+            var posts = new Collection<Post>();
+            foreach (var clubId in clubIds)
+            {
+                var foundedPosts = await _context.Posts.Where(post => post.ClubId == clubId).ToListAsync();
+                // if (foundedPosts.Count == 0) throw new Exception($"ClubId has no post, clubId: {clubId}");
+                foundedPosts.ForEach(foundedPost => posts.Add(foundedPost));
+            }
+
+            return posts.Select(post => _mapper.Map<PostResource>(post)).ToList();
+        }
+
+        /// <summary>
+        /// This method gets posts of the clubs which user subscribed to.
+        /// </summary>
+        /// <param name="userId">UserId of requested post feed</param>
+        /// <returns>Returns a collection of PostResource</returns>
+        /// <exception cref="ArgumentException">When given userId is wrong</exception>
+        /// <exception cref="Exception">When given userId's UserClubs is empty</exception>
+        public async Task<ICollection<PostResource>> GetMyPostFeedAsync(string userId)
+        {
+            // var user = await _context.Users.FindAsync(userId);
+            var foundedUser = await _context.Users
+                .Include(user => user.UserClubs)
+                .FirstOrDefaultAsync(user => user.Id == userId);
+
+            if (foundedUser == null) throw new ArgumentException("Given userId is wrong");
+            if (foundedUser.UserClubs == null) throw new NullReferenceException("Given user's UserClubs is null");
+            if (foundedUser.UserClubs.Count == 0) throw new Exception("Given userId's UserClubs is empty");
+            var clubIds = foundedUser.UserClubs.Select(userClub => userClub.ClubId).ToList();
+
+            var postResources = await GetPostByClubIds(clubIds);
+
+            return postResources;
+        }
+
         public PostResource AddPost(PostDto postDto)
         {
             #region Checks
+
             if (postDto == null)
                 throw new PostCannotBeNullException();
 
@@ -73,6 +117,7 @@ namespace ClubSystem.Lib.Repositories
 
             if (!validationResult.IsValid)
                 throw new PostIsNotValidException(validationResult.Errors.First().ErrorMessage);
+
             #endregion
 
             var newPost = _mapper.Map<Post>(postDto);
@@ -81,7 +126,7 @@ namespace ClubSystem.Lib.Repositories
             _context.SaveChanges();
 
             var postResource = _mapper.Map<PostResource>(newPost);
-            
+
             return postResource;
         }
     }
