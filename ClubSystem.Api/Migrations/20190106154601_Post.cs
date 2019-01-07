@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClubSystem.Api.Migrations
 {
-    public partial class PostFix : Migration
+    public partial class Post : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,10 +17,7 @@ namespace ClubSystem.Api.Migrations
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_AspNetRoles", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
@@ -42,10 +39,7 @@ namespace ClubSystem.Api.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_AspNetUsers", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Clubs",
@@ -53,21 +47,20 @@ namespace ClubSystem.Api.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     UniversityName = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clubs", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Clubs", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -88,7 +81,8 @@ namespace ClubSystem.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy",
+                            SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -115,7 +109,7 @@ namespace ClubSystem.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new {x.LoginProvider, x.ProviderKey});
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -133,7 +127,7 @@ namespace ClubSystem.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new {x.UserId, x.RoleId});
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
@@ -159,7 +153,7 @@ namespace ClubSystem.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new {x.UserId, x.LoginProvider, x.Name});
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -174,6 +168,7 @@ namespace ClubSystem.Api.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
@@ -200,7 +195,7 @@ namespace ClubSystem.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserClubs", x => new { x.UserId, x.ClubId });
+                    table.PrimaryKey("PK_UserClubs", x => new {x.UserId, x.ClubId});
                     table.ForeignKey(
                         name: "FK_UserClubs_Clubs_ClubId",
                         column: x => x.ClubId,
@@ -224,7 +219,7 @@ namespace ClubSystem.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPosts", x => new { x.UserId, x.PostId });
+                    table.PrimaryKey("PK_UserPosts", x => new {x.UserId, x.PostId});
                     table.ForeignKey(
                         name: "FK_UserPosts_Posts_PostId",
                         column: x => x.PostId,

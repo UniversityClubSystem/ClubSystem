@@ -13,7 +13,7 @@ namespace ClubSystem.Lib.MapProfiles
             CreateMap<ClubDto, Club>();
             CreateMap<Club, ClubResource>()
                 .ForMember(club => club.Members,
-                    p => p.MapFrom(club => club.UserClubs.Select(userClub => new UserResource {Id = userClub.UserId})))
+                    p => p.MapFrom(club => club.UserClubs.Select(userClub => userClub.UserId).ToList()))
                 .ForMember(club => club.Posts,
                     p => p.MapFrom(club => club.Posts.Select(post => new PostResource
                     {

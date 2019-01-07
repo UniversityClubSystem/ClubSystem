@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    [Migration("20181231090957_PostFix")]
-    partial class PostFix
+    [Migration("20190106154601_Post")]
+    partial class Post
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,6 +25,8 @@ namespace ClubSystem.Api.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -47,6 +49,8 @@ namespace ClubSystem.Api.Migrations
                     b.Property<string>("ClubId");
 
                     b.Property<string>("Content");
+
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -256,7 +260,7 @@ namespace ClubSystem.Api.Migrations
 
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.Post", b =>
                 {
-                    b.HasOne("ClubSystem.Lib.Models.Entities.Club", "Club")
+                    b.HasOne("ClubSystem.Lib.Models.Entities.Club")
                         .WithMany("Posts")
                         .HasForeignKey("ClubId");
                 });

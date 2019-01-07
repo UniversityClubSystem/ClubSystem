@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
@@ -76,10 +77,14 @@ namespace ClubSystem.Api.Controllers
         }
 
         [HttpPost("join"), Authorize]
-        public IActionResult AddUserToClub([FromBody] AddUserToClubDto addUserToClubDto)
+        public async Task<IActionResult> AddUserToClub([FromBody] AddUserToClubDto addUserToClubDto)
         {
-            var result = _clubRepository.AddUserToClub(addUserToClubDto);
-            return Ok(result);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _clubRepository.AddUserToClub(addUserToClubDto, User);
+            if (result.Members.Any(member => member == User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value))
+                return Ok(result);
+            return BadRequest(ModelState);
         }
     }
 }

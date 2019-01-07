@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
@@ -14,23 +13,16 @@ namespace ClubSystem.Test.RepositoryTests
 {
     public class ClubRepositoryTests
     {
-        [Fact]
-        public void ShouldAddClub()
+        private IClubRepository GetInMemoryClubRepository()
         {
-            var clubRepository = GetInMemoryClubRepository();
+            DbContextOptions<ClubSystemDbContext> options;
+            var builder = new DbContextOptionsBuilder<ClubSystemDbContext>();
+            options = builder.UseInMemoryDatabase(new Guid().ToString()).Options;
 
-            var members = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University14", Members = members};
-
-            var addedClub = clubRepository.AddClub(club1);
-
-            Assert.NotNull(addedClub);
-            Assert.Equal(addedClub.Name, club1.Name);
-            Assert.Equal(addedClub.UniversityName, club1.UniversityName);
-            foreach (var member in addedClub.Members)
-            {
-                Assert.Equal(member.Id, club1.Members.Single(club => club.Name == member.Name).UserId);
-            }
+            ClubSystemDbContext clubSystemDbContext = new ClubSystemDbContext(options);
+            clubSystemDbContext.Database.EnsureDeleted();
+            clubSystemDbContext.Database.EnsureCreated();
+            return new ClubRepository(clubSystemDbContext);
         }
 
         [Fact]
@@ -38,8 +30,7 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var clubRepository = GetInMemoryClubRepository();
 
-            var members = new List<UserDto> { new UserDto { UserId = "5" , Name = "username1"} };
-            var club1 = new ClubDto { Name = "Name1", UniversityName = "University14", Members = members };
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University14"};
 
             var addedClub = clubRepository.AddClub(club1);
 
@@ -50,12 +41,41 @@ namespace ClubSystem.Test.RepositoryTests
         }
 
         [Fact]
+        public void ShouldAddClub()
+        {
+            var clubRepository = GetInMemoryClubRepository();
+
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University14"};
+
+            var addedClub = clubRepository.AddClub(club1);
+
+            Assert.NotNull(addedClub);
+            Assert.Equal(addedClub.Name, club1.Name);
+            Assert.Equal(addedClub.UniversityName, club1.UniversityName);
+        }
+
+        [Fact]
+        public void ShouldGetAllClub()
+        {
+            var clubRepository = GetInMemoryClubRepository();
+
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
+
+            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2"};
+
+            clubRepository.AddClub(club1);
+            clubRepository.AddClub(club2);
+            var result = clubRepository.GetAllClubs();
+
+            Assert.Equal(2, result.Count());
+        }
+
+        [Fact]
         public void ShouldGetOnlyOneClub()
         {
             var clubRepository = GetInMemoryClubRepository();
 
-            var users = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Members = users};
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
 
             clubRepository.AddClub(club1);
             var result = clubRepository.GetAllClubs();
@@ -64,21 +84,22 @@ namespace ClubSystem.Test.RepositoryTests
         }
 
         [Fact]
-        public void ShouldGetAllClub()
+        public void ShouldReturnClub()
         {
-            var clubRepository = GetInMemoryClubRepository();
+            IClubRepository clubRepository = GetInMemoryClubRepository();
 
-            var users1 = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Members = users1};
+            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
 
-            var users2 = new List<UserDto> {new UserDto {UserId = "6"}};
-            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2", Members = users2};
+            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2"};
 
-            clubRepository.AddClub(club1);
-            clubRepository.AddClub(club2);
-            var result = clubRepository.GetAllClubs();
+            var addedClub1 = clubRepository.AddClub(club1);
+            var addedClub2 = clubRepository.AddClub(club2);
+            var response = clubRepository.GetClub(addedClub1.Id);
 
-            Assert.Equal(2, result.Count());
+            Assert.NotEqual(response, addedClub2);
+            var responseJson = JsonConvert.SerializeObject(response);
+            var addedClub1Json = JsonConvert.SerializeObject(addedClub1);
+            Assert.Equal(responseJson, addedClub1Json);
         }
 
         [Fact]
@@ -99,39 +120,6 @@ namespace ClubSystem.Test.RepositoryTests
 
             Assert.Throws<ClubCannotBeNullException>(() => clubRepository.AddClub(null));
             Assert.Throws<ClubIsNotValidException>(() => clubRepository.AddClub(emptyClub));
-        }
-
-        [Fact]
-        public void ShouldReturnClub()
-        {
-            IClubRepository clubRepository = GetInMemoryClubRepository();
-
-            var users1 = new List<UserDto> {new UserDto {UserId = "5"}};
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1", Members = users1};
-
-            var users2 = new List<UserDto> {new UserDto {UserId = "6"}};
-            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2", Members = users2};
-
-            var addedClub1 = clubRepository.AddClub(club1);
-            var addedClub2 = clubRepository.AddClub(club2);
-            var response = clubRepository.GetClub(addedClub1.Id);
-
-            Assert.NotEqual(response, addedClub2);
-            var responseJson = JsonConvert.SerializeObject(response);
-            var addedClub1Json = JsonConvert.SerializeObject(addedClub1);
-            Assert.Equal(responseJson, addedClub1Json);
-        }
-
-        private IClubRepository GetInMemoryClubRepository()
-        {
-            DbContextOptions<ClubSystemDbContext> options;
-            var builder = new DbContextOptionsBuilder<ClubSystemDbContext>();
-            options = builder.UseInMemoryDatabase(new Guid().ToString()).Options;
-
-            ClubSystemDbContext clubSystemDbContext = new ClubSystemDbContext(options);
-            clubSystemDbContext.Database.EnsureDeleted();
-            clubSystemDbContext.Database.EnsureCreated();
-            return new ClubRepository(clubSystemDbContext);
         }
     }
 }

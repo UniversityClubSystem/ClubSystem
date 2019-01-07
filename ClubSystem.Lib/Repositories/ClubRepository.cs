@@ -82,10 +82,12 @@ namespace ClubSystem.Lib.Repositories
             return clubs.Select(club => _mapper.Map<ClubResource>(club)).ToList();
         }
 
-        public async Task<ClubResource> AddUserToClub(AddUserToClubDto addUserToClubDto)
+        public async Task<ClubResource> AddUserToClub(AddUserToClubDto addUserToClubDto,
+            ClaimsPrincipal claimsPrincipal)
         {
+            var userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var club = await _context.Clubs.FindAsync(addUserToClubDto.ClubId);
-            club.UserClubs.Add(new UserClub {UserId = addUserToClubDto.UserId});
+            club.UserClubs.Add(new UserClub {UserId = userId});
             await _context.SaveChangesAsync();
 
             var clubResource = _mapper.Map<ClubResource>(club);
