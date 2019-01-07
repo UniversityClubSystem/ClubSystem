@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Interfaces;
@@ -12,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
@@ -21,8 +21,11 @@ namespace ClubSystem.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _currentEnvironment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            _currentEnvironment = env;
             Configuration = configuration;
         }
 
@@ -30,12 +33,15 @@ namespace ClubSystem.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString(_currentEnvironment.IsDevelopment()
+                ? "LocalDevelopment"
+                : "AzureStudentSqlServer");
             services.AddDbContext<ClubSystemDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("AzureStudentSqlServer"),
+                    connectionString,
                     b => b.MigrationsAssembly("ClubSystem.Api")
                 ));
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
