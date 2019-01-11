@@ -44,9 +44,9 @@ namespace ClubSystem.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v0.1", new Info
                 {
-                    Version = "v1",
+                    Version = "v0.1",
                     Title = "ClubSystem API",
                     Description = "An API for ClubSystem Project",
                     Contact = new Contact
@@ -108,7 +108,7 @@ namespace ClubSystem.Api
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClubSystem API V1"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v0.1/swagger.json", "ClubSystem API V0.1"); });
 
             app.UseHealthChecks("/health");
 
