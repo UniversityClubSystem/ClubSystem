@@ -7,7 +7,7 @@ using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClubSystem.Lib.Repository
+namespace ClubSystem.Lib.Repositories
 {
     public class UserRepository : Repository<User>, IApplicationUserRepository
     {

@@ -1,17 +1,26 @@
+using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
-using ClubSystem.Lib.Models.Entities;
+using ClubSystem.Lib.Models;
+using ClubSystem.Lib.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClubSystem.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class PostController : Controller
     {
         private readonly IPostRepository _postRepository;
-        
-        public PostController(IPostRepository postRepository)
+        private readonly UserManager<User> _userManager;
+
+        public PostController(UserManager<User> userManager, IPostRepository postRepository)
         {
             _postRepository = postRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -19,17 +28,35 @@ namespace ClubSystem.Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var allPosts = _postRepository.GetAllPosts();
-            
-            return Ok(allPosts);
+            var allPostResources = _postRepository.GetAllPosts();
+
+            return Ok(allPostResources);
         }
 
-        [HttpPost]
-        public IActionResult AddPost([FromBody] Post post)
+        [HttpPost, Authorize]
+        public async Task<IActionResult> AddPost([FromBody] PostDto postDto)
         {
-            var addedPost = _postRepository.AddPost(post);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            // TODO: move this logic to service !!!important!!!
+            /**
+             * JwtRegisteredClaimNames.Sub => JwtTokenGenerator
+             * line 35 new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+             */
+            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            postDto.UserIds = new Collection<string> {user?.Id};
+
+            var addedPost = _postRepository.AddPost(postDto);
 
             return Ok(addedPost);
+        }
+
+        [HttpGet("postFeed/{userId}"), Authorize]
+        public async Task<IActionResult> GetMyPostFeed(string userId)
+        {
+            var postResource = await _postRepository.GetMyPostFeedAsync(userId);
+            return Ok(postResource);
         }
 
         [HttpGet("{id}")]

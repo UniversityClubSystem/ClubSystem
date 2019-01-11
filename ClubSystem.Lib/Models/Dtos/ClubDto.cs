@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace ClubSystem.Lib
+﻿namespace ClubSystem.Lib.Models.Dtos
 {
-    class ClubDto : BaseDto
+    public class ClubDto
     {
         public string Name { get; set; }
-        public ICollection<UserDto> Users { get; set; }
+        public string CreatedBy { get; set; }
+        public string UniversityName { get; set; }
     }
 }

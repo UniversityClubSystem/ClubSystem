@@ -19,7 +19,7 @@ namespace ClubSystem.Lib
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserPost>()
-                .HasKey(up => new { up.UserId, up.PostId });
+                .HasKey(up => new {up.UserId, up.PostId});
 
             modelBuilder.Entity<UserPost>()
                 .HasOne(up => up.User)
@@ -32,8 +32,9 @@ namespace ClubSystem.Lib
                 .HasForeignKey(up => up.PostId);
 
             modelBuilder.Entity<UserClub>()
-                .HasKey(up => new { up.UserId, up.ClubId });
+                .HasKey(up => new {up.UserId, up.ClubId});
 
+            /*
             modelBuilder.Entity<UserClub>()
                 .HasOne(up => up.User)
                 .WithMany(u => u.UserClubs)
@@ -43,6 +44,7 @@ namespace ClubSystem.Lib
                 .HasOne(up => up.Club)
                 .WithMany(u => u.UserClubs)
                 .HasForeignKey(up => up.ClubId);
+            */
         }
     }
 }

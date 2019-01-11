@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace ClubSystem.Lib
+namespace ClubSystem.Lib.Models.Resources
 {
-    class BaseResource
+    public class BaseResource
     {
-        public int Identifier { get; set; }
+        public string Id { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string LastEditedBy { get; set; }
-        public DateTime LastEditedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
     }
 }

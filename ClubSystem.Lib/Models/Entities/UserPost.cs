@@ -1,5 +1,8 @@
-﻿namespace ClubSystem.Lib.Models.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ClubSystem.Lib.Models.Entities
 {
+    [Table("UserPosts")]
     public class UserPost
     {
         public string UserId { get; set; }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubSystem.Api.Migrations
 {
     [DbContext(typeof(ClubSystemDbContext))]
-    [Migration("20181219152424_ManyToManyInit")]
-    partial class ManyToManyInit
+    [Migration("20190106154601_Post")]
+    partial class Post
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,12 +26,13 @@ namespace ClubSystem.Api.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.Property<string>("UniversityName");
 
@@ -45,17 +46,23 @@ namespace ClubSystem.Api.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ClubId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("CreatedBy");
+
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<int>("MediaId");
-
-                    b.Property<string>("Text");
+                    b.Property<string>("MediaId");
 
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
 
                     b.ToTable("Posts");
                 });
@@ -70,7 +77,7 @@ namespace ClubSystem.Api.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("UserClub");
+                    b.ToTable("UserClubs");
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserPost", b =>
@@ -83,7 +90,7 @@ namespace ClubSystem.Api.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("UserPost");
+                    b.ToTable("UserPosts");
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Models.User", b =>
@@ -249,6 +256,13 @@ namespace ClubSystem.Api.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ClubSystem.Lib.Models.Entities.Post", b =>
+                {
+                    b.HasOne("ClubSystem.Lib.Models.Entities.Club")
+                        .WithMany("Posts")
+                        .HasForeignKey("ClubId");
                 });
 
             modelBuilder.Entity("ClubSystem.Lib.Models.Entities.UserClub", b =>

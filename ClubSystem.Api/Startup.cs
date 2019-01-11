@@ -1,9 +1,10 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
-using ClubSystem.Lib.Repository;
+using ClubSystem.Lib.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
@@ -21,8 +21,11 @@ namespace ClubSystem.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _currentEnvironment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            _currentEnvironment = env;
             Configuration = configuration;
         }
 
@@ -30,23 +33,20 @@ namespace ClubSystem.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString(_currentEnvironment.IsDevelopment()
+                ? "LocalDevelopment"
+                : "AzureStudentSqlServer");
             services.AddDbContext<ClubSystemDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("AzureStudentSqlServer"),
+                    connectionString,
                     b => b.MigrationsAssembly("ClubSystem.Api")
                 ));
 
-            //services.AddDbContext<ClubSystemDbContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration.GetConnectionString("AzureStudentIdentityDb"),
-            //        b => b.MigrationsAssembly("ClubSystem.Api")
-            //    ));
-
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v0.1", new Info
                 {
-                    Version = "v1",
+                    Version = "v0.1",
                     Title = "ClubSystem API",
                     Description = "An API for ClubSystem Project",
                     Contact = new Contact
@@ -85,6 +85,7 @@ namespace ClubSystem.Api
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -107,7 +108,7 @@ namespace ClubSystem.Api
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClubSystem API V1"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v0.1/swagger.json", "ClubSystem API V0.1"); });
 
             app.UseHealthChecks("/health");
 
