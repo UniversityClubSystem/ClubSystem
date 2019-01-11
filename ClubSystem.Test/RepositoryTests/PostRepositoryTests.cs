@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
+using ClubSystem.Lib.Models;
 using ClubSystem.Lib.Models.Dtos;
+using ClubSystem.Lib.Models.Resources;
 using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -15,6 +18,8 @@ namespace ClubSystem.Test.RepositoryTests
 {
     public class PostRepositoryTests
     {
+        private const string GivenUserIdIsWrongErrorMessage = "Given userId is wrong";
+
         private IPostRepository GetInMemoryPostRepository()
         {
             var builder = new DbContextOptionsBuilder<ClubSystemDbContext>();
@@ -24,6 +29,51 @@ namespace ClubSystem.Test.RepositoryTests
             clubSystemDbContext.Database.EnsureDeleted();
             clubSystemDbContext.Database.EnsureCreated();
             return new PostRepository(clubSystemDbContext);
+        }
+
+        private ClubSystemDbContext GetInMemoryDbContext()
+        {
+            var builder = new DbContextOptionsBuilder<ClubSystemDbContext>();
+            var options = builder.UseInMemoryDatabase(new Guid().ToString()).Options;
+
+            ClubSystemDbContext clubSystemDbContext = new ClubSystemDbContext(options);
+            clubSystemDbContext.Database.EnsureDeleted();
+            clubSystemDbContext.Database.EnsureCreated();
+            clubSystemDbContext.Users.Add(new User
+                {Id = "1234", UserName = "username1", PasswordHash = new Guid().ToString()});
+            return clubSystemDbContext;
+        }
+
+        private static ClaimsPrincipal GenerateClaimsPrincipalWithId(string userId)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim("sub", userId)
+            };
+            var identity = new ClaimsIdentity(claims, "TestAuthType");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+            return claimsPrincipal;
+        }
+
+        private async Task<(string userId, ClubResource addedClub1, ClubResource addedClub2)> SetUpPostFeed(
+            ClubSystemDbContext dbContext)
+        {
+            var clubRepository = new ClubRepository(dbContext);
+
+            var clubDto1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
+            var clubDto2 = new ClubDto {Name = "Name2", UniversityName = "University2"};
+            var addedClub1 = clubRepository.AddClub(clubDto1);
+            var addedClub2 = clubRepository.AddClub(clubDto2);
+            const string userId = "1234";
+
+            var claimsPrincipal = GenerateClaimsPrincipalWithId(userId);
+
+            var addUserToClubDto1 = new AddUserToClubDto {ClubId = addedClub1.Id};
+            var addUserToClubDto2 = new AddUserToClubDto {ClubId = addedClub2.Id};
+            await clubRepository.AddUserToClub(addUserToClubDto1, claimsPrincipal);
+            await clubRepository.AddUserToClub(addUserToClubDto2, claimsPrincipal);
+
+            return (userId, addedClub1, addedClub2);
         }
 
         [Fact]
@@ -70,13 +120,27 @@ namespace ClubSystem.Test.RepositoryTests
         }
 
         [Fact]
-        public async Task ShouldGetEmptyPostFeed()
+        public async Task ShouldGetArgumentExceptionWithUserIdError()
         {
             // Arrange
             var postRepository = GetInMemoryPostRepository();
 
+            // Act & Assert
+            var exception =
+                await Assert.ThrowsAsync<ArgumentException>(() => postRepository.GetMyPostFeedAsync("1234"));
+            Assert.Equal(GivenUserIdIsWrongErrorMessage, exception.Message);
+        }
+
+        [Fact]
+        public async Task ShouldGetEmptyPostFeed()
+        {
+            // Arrange
+            var dbContext = GetInMemoryDbContext();
+            var postRepository = new PostRepository(dbContext);
+            var (userId, _, _) = await SetUpPostFeed(dbContext);
+
             // Act
-            var postResponse = await postRepository.GetMyPostFeedAsync("1234");
+            var postResponse = await postRepository.GetMyPostFeedAsync(userId);
 
             // Assert
             Assert.Empty(postResponse);
@@ -102,49 +166,22 @@ namespace ClubSystem.Test.RepositoryTests
         public async Task ShouldGetPostFeedCorrect()
         {
             // Arrange
-            var postRepository = GetInMemoryPostRepository();
+            var dbContext = GetInMemoryDbContext();
+            var postRepository = new PostRepository(dbContext);
 
-            // Act
-            var postResponse = await postRepository.GetMyPostFeedAsync("1234");
+            // This method creates two clubs and adds the first created user (see GetInMemoryDbContext method) to these clubs.
+            // Just for reducing complexity ¯\_(ツ)_/¯
+            var (userId, addedClub1, addedClub2) = await SetUpPostFeed(dbContext);
+
+            postRepository.AddPost(new PostDto
+                {ClubId = addedClub1.Id, Title = "Club1 Post1 Title1", Content = "Club1 Post1 Content1"});
+            postRepository.AddPost(new PostDto
+                {ClubId = addedClub2.Id, Title = "Club2 Post2 Title2", Content = "Club2 Post2 Content2"});
+
+            var postResponse = await postRepository.GetMyPostFeedAsync(userId);
 
             // Assert
             Assert.Equal(2, postResponse.Count);
-        }
-
-        [Fact]
-        public async Task ShouldGetPostFeedWithOnePost()
-        {
-            // Arrange
-            var postRepository = GetInMemoryPostRepository();
-
-            var userIds1 = new List<string> {"42", "45"};
-            var userIds2 = new List<string> {"43", "45"};
-            var post1 = new PostDto
-                {Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "4"};
-            var post2 = new PostDto
-                {Title = "Title2", Content = "Content2", MediaId = "542", UserIds = userIds1, ClubId = "3"};
-            var post3 = new PostDto
-                {Title = "Title3", Content = "Content3", MediaId = "56", UserIds = userIds2, ClubId = "5"};
-            var post4 = new PostDto
-                {Title = "Title4", Content = "Content4", MediaId = "6758", UserIds = userIds1, ClubId = "3"};
-
-            var addedPost1 = postRepository.AddPost(post1);
-            postRepository.AddPost(post2);
-            postRepository.AddPost(post3);
-            postRepository.AddPost(post4);
-
-            if (addedPost1.Users.ElementAt(0) != null)
-            {
-                // Act
-                var postResponse1 =
-                    await postRepository.GetMyPostFeedAsync(userIds2.ElementAt(0)); // user with userId 43
-                var postResponse2 =
-                    await postRepository.GetMyPostFeedAsync(userIds1.ElementAt(0)); // user with userId 42
-
-                // Assert
-                Assert.Single(postResponse1);
-                Assert.Equal(3, postResponse2.Count);
-            }
         }
 
         [Fact]

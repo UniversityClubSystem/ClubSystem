@@ -86,7 +86,7 @@ namespace ClubSystem.Lib.Repositories
         /// </summary>
         /// <param name="userId">UserId of requested post feed</param>
         /// <returns>Returns a collection of PostResource</returns>
-        /// <exception cref="ArgumentException">When given userId is wrong</exception>
+        /// <exception cref="ArgumentException">When given userId is not found in database</exception>
         /// <exception cref="Exception">When given userId's UserClubs is empty</exception>
         public async Task<ICollection<PostResource>> GetMyPostFeedAsync(string userId)
         {
