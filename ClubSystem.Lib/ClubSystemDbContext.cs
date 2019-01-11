@@ -1,14 +1,14 @@
-﻿using ClubSystem.Lib.Model;
-using ClubSystem.Lib.Model.Club;
-using ClubSystem.Lib.Model.User;
+﻿using ClubSystem.Lib.Models;
+using ClubSystem.Lib.Models.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib
 {
-    public class ClubSystemDbContext : DbContext
+    public class ClubSystemDbContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<Club> Clubs { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         public ClubSystemDbContext(DbContextOptions<ClubSystemDbContext> options) : base(options)
         {
@@ -16,12 +16,35 @@ namespace ClubSystem.Lib
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserClub>().HasKey(uc =>
-                new { uc.UserId, uc.ClubId });
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
-                .Property(u => u.Name)
-                .IsRequired(true);
+            modelBuilder.Entity<UserPost>()
+                .HasKey(up => new {up.UserId, up.PostId});
+
+            modelBuilder.Entity<UserPost>()
+                .HasOne(up => up.User)
+                .WithMany(u => u.UserPosts)
+                .HasForeignKey(up => up.UserId);
+
+            modelBuilder.Entity<UserPost>()
+                .HasOne(up => up.Post)
+                .WithMany(u => u.UserPosts)
+                .HasForeignKey(up => up.PostId);
+
+            modelBuilder.Entity<UserClub>()
+                .HasKey(up => new {up.UserId, up.ClubId});
+
+            /*
+            modelBuilder.Entity<UserClub>()
+                .HasOne(up => up.User)
+                .WithMany(u => u.UserClubs)
+                .HasForeignKey(up => up.UserId);
+
+            modelBuilder.Entity<UserClub>()
+                .HasOne(up => up.Club)
+                .WithMany(u => u.UserClubs)
+                .HasForeignKey(up => up.ClubId);
+            */
         }
     }
 }

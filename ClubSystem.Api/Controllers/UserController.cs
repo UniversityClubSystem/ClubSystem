@@ -1,46 +1,70 @@
-﻿using ClubSystem.Lib.Interfaces;
-using ClubSystem.Lib.Model.User;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ClubSystem.Api.Extensions;
+using ClubSystem.Lib.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace ClubSystem.Api.Controllers
 {
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly JwtTokenGenerator _jwtTokenGenerator;
+
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
+            _signInManager = signInManager;
+
+            _jwtTokenGenerator = new JwtTokenGenerator(configuration);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetAllUsers()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var users = _userRepository.GetAllUsers();
-
-            return Ok(users);
+            return Ok(_userManager.Users.ToList());
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetUser(int id)
+        [HttpPost("login")]
+        public async Task<object> Login([FromBody] User user) // TODO: LoginDto model
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = _userRepository.GetUser(id);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, false, false);
 
-            return Ok(user);
+            if (!result.Succeeded) return BadRequest("Invalid Credentials");
+
+            var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == user.UserName);
+            return _jwtTokenGenerator.GenerateJwtToken(user.UserName, appUser);
         }
 
         [HttpPost]
-        public IActionResult AddUser([FromBody] User user)
+        public async Task<object> Register([FromBody] User user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var response = _userRepository.AddUser(user);
+            var newUser = new User { UserName = user.UserName, Email = user.Email };
+            var result = await _userManager.CreateAsync(newUser, user.PasswordHash);
 
-            return Ok(response);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(newUser, false);
+                return _jwtTokenGenerator.GenerateJwtToken(user.UserName, newUser);
+            }
+
+            foreach (var responseError in result.Errors)
+            {
+                ModelState.AddModelError("errors", responseError.Description);
+            }
+
+            return BadRequest(ModelState);
         }
     }
 }
