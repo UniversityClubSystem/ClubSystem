@@ -1,6 +1,6 @@
 # UniversityClubSystem Api
 
-[![Build Status](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_apis/build/status/UniversityClubSystem.ClubSystem)](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_build/latest?definitionId=4)
+[![CircleCI](https://circleci.com/gh/UniversityClubSystem/ClubSystem.svg?style=svg)](https://circleci.com/gh/UniversityClubSystem/ClubSystem)
 
 [Postman Import Link](https://www.getpostman.com/collections/1ee260fb9d8f0eeca1d9)
 
