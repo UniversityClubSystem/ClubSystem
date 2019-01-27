@@ -8,11 +8,9 @@ namespace ClubSystem.Lib.Interfaces
         T Get(string id);
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(Func<T, bool> predicate);
-
         void Add(T entity);
         void AddRange(IEnumerable<T> entities);
-
-        void Remove(T entity);
+        void Remove(T id);
         void RemoveRange(IEnumerable<T> entities);
     }
 }

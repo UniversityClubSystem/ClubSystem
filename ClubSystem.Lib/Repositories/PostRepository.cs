@@ -34,10 +34,7 @@ namespace ClubSystem.Lib.Repositories
             var club = _context.Clubs.Find(post?.ClubId);
 
             var postResource = _mapper.Map<PostResource>(post);
-            if (club != null)
-            {
-                postResource.ClubName = club.Name;
-            }
+            if (club != null) postResource.ClubName = club.Name;
 
             return postResource;
         }
@@ -53,17 +50,14 @@ namespace ClubSystem.Lib.Repositories
             foreach (var postResource in postResources)
             {
                 var foundedClub = allClubs.Find(club => club.Id == postResource.ClubId);
-                if (foundedClub != null)
-                {
-                    postResource.ClubName = foundedClub.Name;
-                }
+                if (foundedClub != null) postResource.ClubName = foundedClub.Name;
             }
 
             return postResources;
         }
 
         /// <summary>
-        /// This method gets PostResources of given clubIds
+        ///     This method gets PostResources of given clubIds
         /// </summary>
         /// <param name="clubIds">Collection of clubIds of requested posts.</param>
         /// <returns>A collection of PostResource</returns>
@@ -82,7 +76,25 @@ namespace ClubSystem.Lib.Repositories
         }
 
         /// <summary>
-        /// This method gets posts of the clubs which user subscribed to.
+        ///     This method finds the post with given postId and removes from the database.
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns>True or false</returns>
+        /// <exception cref="PostNotFoundException"></exception>
+        public async Task<bool> RemoveAsync(string postId)
+        {
+            var post = await _context.Posts.FindAsync(postId);
+
+            if (post == null) throw new PostNotFoundException("The given postId is not found in database");
+
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        /// <summary>
+        ///     This method gets posts of the clubs which user subscribed to.
         /// </summary>
         /// <param name="userId">UserId of requested post feed</param>
         /// <returns>Returns a collection of PostResource</returns>

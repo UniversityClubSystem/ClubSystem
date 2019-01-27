@@ -6,17 +6,14 @@ namespace ClubSystem.Lib.Exceptions
     {
         public UserNameCannotBeNullException()
         {
-
         }
 
-        public UserNameCannotBeNullException(string message): base(message)
+        public UserNameCannotBeNullException(string message) : base(message)
         {
-
         }
 
-        public UserNameCannotBeNullException(string message, Exception inner): base(message, inner)
+        public UserNameCannotBeNullException(string message, Exception inner) : base(message, inner)
         {
-
         }
     }
 }

@@ -13,5 +13,6 @@ namespace ClubSystem.Lib.Interfaces
         PostResource AddPost(PostDto postDto);
         Task<ICollection<PostResource>> GetMyPostFeedAsync(string userId);
         Task<ICollection<PostResource>> GetPostByClubIds(IEnumerable<string> clubIds);
+        Task<bool> RemoveAsync(string postId);
     }
 }

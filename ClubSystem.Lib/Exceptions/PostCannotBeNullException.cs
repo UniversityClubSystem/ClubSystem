@@ -6,17 +6,14 @@ namespace ClubSystem.Lib.Exceptions
     {
         public PostCannotBeNullException()
         {
-
         }
 
         public PostCannotBeNullException(string message) : base(message)
         {
-
         }
 
         public PostCannotBeNullException(string message, Exception inner) : base(message, inner)
         {
-
         }
     }
 }

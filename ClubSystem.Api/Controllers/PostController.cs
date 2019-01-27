@@ -33,7 +33,8 @@ namespace ClubSystem.Api.Controllers
             return Ok(allPostResources);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddPost([FromBody] PostDto postDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -52,7 +53,19 @@ namespace ClubSystem.Api.Controllers
             return Ok(addedPost);
         }
 
-        [HttpGet("postFeed/{userId}"), Authorize]
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeletePost([FromBody] string postId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            await _postRepository.RemoveAsync(postId);
+
+            return Ok(ModelState);
+        }
+
+        [HttpGet("postFeed/{userId}")]
+        [Authorize]
         public async Task<IActionResult> GetMyPostFeed(string userId)
         {
             var postResource = await _postRepository.GetMyPostFeedAsync(userId);
