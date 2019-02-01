@@ -53,15 +53,15 @@ namespace ClubSystem.Api.Controllers
             return Ok(addedPost);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeletePost([FromBody] string postId)
+        public async Task<IActionResult> DeletePost(string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _postRepository.RemoveAsync(postId);
+            await _postRepository.RemoveAsync(id);
 
-            return Ok(ModelState);
+            return NoContent();
         }
 
         [HttpGet("postFeed/{userId}")]
