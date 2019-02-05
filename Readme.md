@@ -1,7 +1,5 @@
 # UniversityClubSystem Api
 
-[![Build Status](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_apis/build/status/UniversityClubSystem.ClubSystem)](https://dev.azure.com/UniversityClubSystem/ClubSystem.Api/_build/latest?definitionId=4)
-
 [Postman Import Link](https://www.getpostman.com/collections/1ee260fb9d8f0eeca1d9)
 
 <a href="https://ibb.co/foCzd0"><img src="https://preview.ibb.co/gMnXy0/Screen-Shot-2018-10-20-at-00-31-23.png" alt="Screen-Shot-2018-10-20-at-00-31-23" border="0"></a>
