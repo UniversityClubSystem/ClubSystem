@@ -81,7 +81,7 @@ namespace ClubSystem.Lib.Repositories
         /// <param name="postId"></param>
         /// <returns>True or false</returns>
         /// <exception cref="PostNotFoundException"></exception>
-        public async Task<bool> RemoveAsync(string postId)
+        public async Task RemoveAsync(string postId)
         {
             var post = await _context.Posts.FindAsync(postId);
 
@@ -89,8 +89,6 @@ namespace ClubSystem.Lib.Repositories
 
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
-
-            return true;
         }
 
         /// <summary>

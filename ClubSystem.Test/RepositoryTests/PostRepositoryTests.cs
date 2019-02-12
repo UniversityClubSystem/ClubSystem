@@ -112,10 +112,9 @@ namespace ClubSystem.Test.RepositoryTests
             var addedPost2 = postRepository.AddPost(post2);
 
             // act
-            var result = await postRepository.RemoveAsync(addedPost1.Id);
+            await postRepository.RemoveAsync(addedPost1.Id);
 
             // assert
-            Assert.True(result);
             Assert.DoesNotContain(addedPost1, postRepository.GetAllPosts());
 
             var gettedPostJson = JsonConvert.SerializeObject(postRepository.GetPost(addedPost2.Id));
