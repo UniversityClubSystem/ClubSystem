@@ -1,15 +1,15 @@
-﻿using ClubSystem.Lib.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ClubSystem.Lib.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly DbContext Context;
-        
+
         public Repository(DbContext context)
         {
             Context = context;
@@ -40,9 +40,9 @@ namespace ClubSystem.Lib.Repositories
             Context.Set<T>().AddRange(entities);
         }
 
-        public void Remove(T entity)
+        public void Remove(T id)
         {
-            Context.Set<T>().Remove(entity);
+            Context.Set<T>().Remove(id);
         }
 
         public void RemoveRange(IEnumerable<T> entities)
