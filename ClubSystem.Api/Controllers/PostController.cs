@@ -62,10 +62,10 @@ namespace ClubSystem.Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("postFeed/{userId}")]
-        public async Task<IActionResult> GetMyPostFeed(string userId)
+        [HttpGet("postFeed")]
+        public async Task<IActionResult> GetMyPostFeed()
         {
-            var postResource = await _postRepository.GetMyPostFeedAsync(userId);
+            var postResource = await _postRepository.GetMyPostFeedAsync(User);
             return Ok(postResource);
         }
 

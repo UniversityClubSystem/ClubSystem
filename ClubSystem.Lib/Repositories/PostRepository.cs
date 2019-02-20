@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using ClubSystem.Lib.Exceptions;
@@ -12,6 +13,7 @@ using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Models.Resources;
 using ClubSystem.Lib.Validators;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ClubSystem.Lib.Repositories
 {
@@ -94,13 +96,14 @@ namespace ClubSystem.Lib.Repositories
         /// <summary>
         ///     This method gets posts of the clubs which user subscribed to.
         /// </summary>
-        /// <param name="userId">UserId of requested post feed</param>
+        /// <param name="claimsPrincipal"></param>
         /// <returns>Returns a collection of PostResource</returns>
         /// <exception cref="ArgumentException">When given userId is not found in database</exception>
         /// <exception cref="Exception">When given userId's UserClubs is empty</exception>
-        public async Task<ICollection<PostResource>> GetMyPostFeedAsync(string userId)
+        public async Task<ICollection<PostResource>> GetMyPostFeedAsync(ClaimsPrincipal claimsPrincipal)
         {
             // var user = await _context.Users.FindAsync(userId);
+            var userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var foundedUser = await _context.Users
                 .Include(user => user.UserClubs)
                 .FirstOrDefaultAsync(user => user.Id == userId);

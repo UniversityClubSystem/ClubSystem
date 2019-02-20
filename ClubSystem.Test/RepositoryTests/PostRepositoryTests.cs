@@ -151,10 +151,11 @@ namespace ClubSystem.Test.RepositoryTests
         {
             // Arrange
             var postRepository = GetInMemoryPostRepository();
+            var claimsPrincipal = GenerateClaimsPrincipalWithId("1234");
 
             // Act & Assert
             var exception =
-                await Assert.ThrowsAsync<ArgumentException>(() => postRepository.GetMyPostFeedAsync("1234"));
+                await Assert.ThrowsAsync<ArgumentException>(() => postRepository.GetMyPostFeedAsync(claimsPrincipal));
             Assert.Equal(GivenUserIdIsWrongErrorMessage, exception.Message);
         }
 
@@ -165,9 +166,10 @@ namespace ClubSystem.Test.RepositoryTests
             var dbContext = GetInMemoryDbContext();
             var postRepository = new PostRepository(dbContext);
             var (userId, _, _) = await SetUpPostFeed(dbContext);
+            var claimsPrincipal = GenerateClaimsPrincipalWithId("1234");
 
             // Act
-            var postResponse = await postRepository.GetMyPostFeedAsync(userId);
+            var postResponse = await postRepository.GetMyPostFeedAsync(claimsPrincipal);
 
             // Assert
             Assert.Empty(postResponse);
@@ -195,17 +197,18 @@ namespace ClubSystem.Test.RepositoryTests
             // Arrange
             var dbContext = GetInMemoryDbContext();
             var postRepository = new PostRepository(dbContext);
+            var claimsPrincipal = GenerateClaimsPrincipalWithId("1234");
 
             // This method creates two clubs and adds the first created user (see GetInMemoryDbContext method) to these clubs.
             // Just for reducing complexity ¯\_(ツ)_/¯
-            var (userId, addedClub1, addedClub2) = await SetUpPostFeed(dbContext);
+            var (_, addedClub1, addedClub2) = await SetUpPostFeed(dbContext);
 
             postRepository.AddPost(new PostDto
                 {ClubId = addedClub1.Id, Title = "Club1 Post1 Title1", Content = "Club1 Post1 Content1"});
             postRepository.AddPost(new PostDto
                 {ClubId = addedClub2.Id, Title = "Club2 Post2 Title2", Content = "Club2 Post2 Content2"});
 
-            var postResponse = await postRepository.GetMyPostFeedAsync(userId);
+            var postResponse = await postRepository.GetMyPostFeedAsync(claimsPrincipal);
 
             // Assert
             Assert.Equal(2, postResponse.Count);
