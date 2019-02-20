@@ -9,6 +9,7 @@ namespace ClubSystem.Lib.Models.Entities
         public string Content { get; set; }
         public string MediaId { get; set; }
         public string ClubId { get; set; }
+        public string ClubName { get; set; }
         public ICollection<UserPost> UserPosts { get; set; }
 
         public Post()

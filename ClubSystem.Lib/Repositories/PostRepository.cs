@@ -67,11 +67,17 @@ namespace ClubSystem.Lib.Repositories
         public async Task<ICollection<PostResource>> GetPostByClubIds(IEnumerable<string> clubIds)
         {
             var posts = new Collection<Post>();
-            foreach (var clubId in clubIds)
+            var clubIdsSet = new HashSet<string>(clubIds);
+            
+            foreach (var clubId in clubIdsSet)
             {
+                var club = await _context.Clubs.FindAsync(clubId);
                 var foundedPosts = await _context.Posts.Where(post => post.ClubId == clubId).ToListAsync();
-                // if (foundedPosts.Count == 0) throw new Exception($"ClubId has no post, clubId: {clubId}");
-                foundedPosts.ForEach(foundedPost => posts.Add(foundedPost));
+                foundedPosts.ForEach(foundedPost =>
+                {
+                    foundedPost.ClubName = club?.Name;
+                    posts.Add(foundedPost);
+                });
             }
 
             return posts.Select(post => _mapper.Map<PostResource>(post)).ToList();
