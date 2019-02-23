@@ -63,7 +63,6 @@ namespace ClubSystem.Lib.Repositories
         /// </summary>
         /// <param name="clubIds">Collection of clubIds of requested posts.</param>
         /// <returns>A collection of PostResource</returns>
-        /// <exception cref="Exception">When clubId has no post</exception>
         public async Task<ICollection<PostResource>> GetPostByClubIds(IEnumerable<string> clubIds)
         {
             var posts = new Collection<Post>();
@@ -105,18 +104,14 @@ namespace ClubSystem.Lib.Repositories
         /// <param name="claimsPrincipal"></param>
         /// <returns>Returns a collection of PostResource</returns>
         /// <exception cref="ArgumentException">When given userId is not found in database</exception>
-        /// <exception cref="Exception">When given userId's UserClubs is empty</exception>
         public async Task<ICollection<PostResource>> GetMyPostFeedAsync(ClaimsPrincipal claimsPrincipal)
         {
-            // var user = await _context.Users.FindAsync(userId);
             var userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var foundedUser = await _context.Users
                 .Include(user => user.UserClubs)
                 .FirstOrDefaultAsync(user => user.Id == userId);
 
             if (foundedUser == null) throw new ArgumentException("Given userId is wrong");
-            if (foundedUser.UserClubs == null) throw new NullReferenceException("Given user's UserClubs is null");
-            if (foundedUser.UserClubs.Count == 0) throw new Exception("Given userId's UserClubs is empty");
             var clubIds = foundedUser.UserClubs.Select(userClub => userClub.ClubId).ToList();
 
             var postResources = await GetPostByClubIds(clubIds);
