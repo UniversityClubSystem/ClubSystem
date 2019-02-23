@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ClubSystem.Lib.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ClubSystem.Lib.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClubSystem.Lib.Repositories
 {

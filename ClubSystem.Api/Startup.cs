@@ -1,7 +1,4 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using ClubSystem.Lib;
+﻿using ClubSystem.Lib;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
 using ClubSystem.Lib.Repositories;
@@ -16,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace ClubSystem.Api
 {

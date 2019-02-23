@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using ClubSystem.Lib.Models.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace ClubSystem.Lib.Models
 {

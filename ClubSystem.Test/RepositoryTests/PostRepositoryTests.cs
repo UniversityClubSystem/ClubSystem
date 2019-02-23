@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
@@ -12,6 +7,11 @@ using ClubSystem.Lib.Models.Resources;
 using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ClubSystem.Test.RepositoryTests
@@ -40,7 +40,7 @@ namespace ClubSystem.Test.RepositoryTests
             clubSystemDbContext.Database.EnsureDeleted();
             clubSystemDbContext.Database.EnsureCreated();
             clubSystemDbContext.Users.Add(new User
-                {Id = "1234", UserName = "username1", PasswordHash = new Guid().ToString()});
+            { Id = "1234", UserName = "username1", PasswordHash = new Guid().ToString() });
             return clubSystemDbContext;
         }
 
@@ -60,16 +60,16 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var clubRepository = new ClubRepository(dbContext);
 
-            var clubDto1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
-            var clubDto2 = new ClubDto {Name = "Name2", UniversityName = "University2"};
+            var clubDto1 = new ClubDto { Name = "Name1", UniversityName = "University1" };
+            var clubDto2 = new ClubDto { Name = "Name2", UniversityName = "University2" };
             var addedClub1 = clubRepository.AddClub(clubDto1);
             var addedClub2 = clubRepository.AddClub(clubDto2);
             const string userId = "1234";
 
             var claimsPrincipal = GenerateClaimsPrincipalWithId(userId);
 
-            var addUserToClubDto1 = new AddUserToClubDto {ClubId = addedClub1.Id};
-            var addUserToClubDto2 = new AddUserToClubDto {ClubId = addedClub2.Id};
+            var addUserToClubDto1 = new AddUserToClubDto { ClubId = addedClub1.Id };
+            var addUserToClubDto2 = new AddUserToClubDto { ClubId = addedClub2.Id };
             await clubRepository.AddUserToClub(addUserToClubDto1, claimsPrincipal);
             await clubRepository.AddUserToClub(addUserToClubDto2, claimsPrincipal);
 
@@ -81,9 +81,9 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userIds = new List<string> {"42", "45"};
+            var userIds = new List<string> { "42", "45" };
             var post1 = new PostDto
-                {Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124"};
+            { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
 
             var addedPost = postRepository.AddPost(post1);
 
@@ -101,12 +101,12 @@ namespace ClubSystem.Test.RepositoryTests
             // arrange
             var postRepository = GetInMemoryPostRepository();
 
-            var userIds = new List<string> {"42", "45"};
+            var userIds = new List<string> { "42", "45" };
             var post1 = new PostDto
-                {Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124"};
-            var userIds2 = new List<string> {"214"};
+            { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
+            var userIds2 = new List<string> { "214" };
             var post2 = new PostDto
-                {Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "124"};
+            { Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "124" };
 
             var addedPost1 = postRepository.AddPost(post1);
             var addedPost2 = postRepository.AddPost(post2);
@@ -127,13 +127,13 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userIds1 = new List<string> {"42"};
+            var userIds1 = new List<string> { "42" };
             var post1 = new PostDto
-                {Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "124"};
+            { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
 
-            var userIds2 = new List<string> {"214"};
+            var userIds2 = new List<string> { "214" };
             var post2 = new PostDto
-                {Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "124"};
+            { Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "124" };
 
             postRepository.AddPost(post1);
             postRepository.AddPost(post2);
@@ -180,9 +180,9 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userIds = new List<string> {"42"};
+            var userIds = new List<string> { "42" };
             var post = new PostDto
-                {Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124"};
+            { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds, ClubId = "124" };
 
             postRepository.AddPost(post);
             var result = postRepository.GetAllPosts();
@@ -204,9 +204,9 @@ namespace ClubSystem.Test.RepositoryTests
             var (_, addedClub1, addedClub2) = await SetUpPostFeed(dbContext);
 
             postRepository.AddPost(new PostDto
-                {ClubId = addedClub1.Id, Title = "Club1 Post1 Title1", Content = "Club1 Post1 Content1"});
+            { ClubId = addedClub1.Id, Title = "Club1 Post1 Title1", Content = "Club1 Post1 Content1" });
             postRepository.AddPost(new PostDto
-                {ClubId = addedClub2.Id, Title = "Club2 Post2 Title2", Content = "Club2 Post2 Content2"});
+            { ClubId = addedClub2.Id, Title = "Club2 Post2 Title2", Content = "Club2 Post2 Content2" });
 
             var postResponse = await postRepository.GetMyPostFeedAsync(claimsPrincipal);
 
@@ -229,13 +229,13 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var postRepository = GetInMemoryPostRepository();
 
-            var userIds1 = new List<string> {"42", "45"};
+            var userIds1 = new List<string> { "42", "45" };
             var post1 = new PostDto
-                {Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "124"};
+            { Title = "Title1", Content = "Content1", MediaId = "1234", UserIds = userIds1, ClubId = "124" };
 
-            var userIds2 = new List<string> {"214"};
+            var userIds2 = new List<string> { "214" };
             var post2 = new PostDto
-                {Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "312"};
+            { Title = "Title2", Content = "Content2", MediaId = "452645", UserIds = userIds2, ClubId = "312" };
 
             var addedPost1 = postRepository.AddPost(post1);
             var addedPost2 = postRepository.AddPost(post2);

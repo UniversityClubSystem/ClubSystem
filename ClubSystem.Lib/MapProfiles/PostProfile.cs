@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Models.Resources;
+using System.Linq;
 
 namespace ClubSystem.Lib.MapProfiles
 {
@@ -12,11 +12,11 @@ namespace ClubSystem.Lib.MapProfiles
         {
             CreateMap<PostDto, Post>()
                 .ForMember(post => post.UserPosts,
-                    p => p.MapFrom(postDto => postDto.UserIds.Select(userId => new UserPost {UserId = userId})));
+                    p => p.MapFrom(postDto => postDto.UserIds.Select(userId => new UserPost { UserId = userId })));
 
             CreateMap<Post, PostResource>()
                 .ForMember(postResource => postResource.Users,
-                    p => p.MapFrom(post => post.UserPosts.Select(userPost => new UserResource {Id = userPost.UserId})));
+                    p => p.MapFrom(post => post.UserPosts.Select(userPost => new UserResource { Id = userPost.UserId })));
         }
     }
 }

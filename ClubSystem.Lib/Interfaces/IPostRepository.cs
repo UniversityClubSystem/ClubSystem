@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Models.Resources;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ClubSystem.Lib.Interfaces
 {

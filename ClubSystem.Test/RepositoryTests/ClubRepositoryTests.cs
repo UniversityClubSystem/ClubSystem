@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using ClubSystem.Lib;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
@@ -7,6 +5,8 @@ using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace ClubSystem.Test.RepositoryTests
@@ -30,7 +30,7 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var clubRepository = GetInMemoryClubRepository();
 
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University14"};
+            var club1 = new ClubDto { Name = "Name1", UniversityName = "University14" };
 
             var addedClub = clubRepository.AddClub(club1);
 
@@ -45,7 +45,7 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var clubRepository = GetInMemoryClubRepository();
 
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University14"};
+            var club1 = new ClubDto { Name = "Name1", UniversityName = "University14" };
 
             var addedClub = clubRepository.AddClub(club1);
 
@@ -59,9 +59,9 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var clubRepository = GetInMemoryClubRepository();
 
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
+            var club1 = new ClubDto { Name = "Name1", UniversityName = "University1" };
 
-            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2"};
+            var club2 = new ClubDto { Name = "Name2", UniversityName = "University2" };
 
             clubRepository.AddClub(club1);
             clubRepository.AddClub(club2);
@@ -75,7 +75,7 @@ namespace ClubSystem.Test.RepositoryTests
         {
             var clubRepository = GetInMemoryClubRepository();
 
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
+            var club1 = new ClubDto { Name = "Name1", UniversityName = "University1" };
 
             clubRepository.AddClub(club1);
             var result = clubRepository.GetAllClubs();
@@ -88,9 +88,9 @@ namespace ClubSystem.Test.RepositoryTests
         {
             IClubRepository clubRepository = GetInMemoryClubRepository();
 
-            var club1 = new ClubDto {Name = "Name1", UniversityName = "University1"};
+            var club1 = new ClubDto { Name = "Name1", UniversityName = "University1" };
 
-            var club2 = new ClubDto {Name = "Name2", UniversityName = "University2"};
+            var club2 = new ClubDto { Name = "Name2", UniversityName = "University2" };
 
             var addedClub1 = clubRepository.AddClub(club1);
             var addedClub2 = clubRepository.AddClub(club2);

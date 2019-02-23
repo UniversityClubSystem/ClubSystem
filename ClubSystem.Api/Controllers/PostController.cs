@@ -1,12 +1,12 @@
-using System.Collections.ObjectModel;
-using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
 using ClubSystem.Lib.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace ClubSystem.Api.Controllers
 {
@@ -45,7 +45,7 @@ namespace ClubSystem.Api.Controllers
              */
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            postDto.UserIds = new Collection<string> {user?.Id};
+            postDto.UserIds = new Collection<string> { user?.Id };
 
             var addedPost = _postRepository.AddPost(postDto);
 

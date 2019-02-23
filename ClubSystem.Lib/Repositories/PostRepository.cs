@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
@@ -14,6 +8,12 @@ using ClubSystem.Lib.Models.Resources;
 using ClubSystem.Lib.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ClubSystem.Lib.Repositories
 {
@@ -67,7 +67,7 @@ namespace ClubSystem.Lib.Repositories
         {
             var posts = new Collection<Post>();
             var clubIdsSet = new HashSet<string>(clubIds);
-            
+
             foreach (var clubId in clubIdsSet)
             {
                 var club = await _context.Clubs.FindAsync(clubId);

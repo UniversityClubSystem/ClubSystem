@@ -5,7 +5,7 @@ using System;
 
 namespace ClubSystem.Test.Utils
 {
-    public  class InMemoryDatabaseHelper<T> where T : class
+    public class InMemoryDatabaseHelper<T> where T : class
     {
         // TODO: make generic repository provider with InMemoryDatabase
         public Repository<T> GetRepositoryWithInMemoryDatabase()

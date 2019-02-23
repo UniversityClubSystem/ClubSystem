@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
 namespace ClubSystem.Lib.Repositories
 {

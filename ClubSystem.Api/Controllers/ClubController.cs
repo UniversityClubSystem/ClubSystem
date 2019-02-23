@@ -1,12 +1,12 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.Models;
 using ClubSystem.Lib.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ClubSystem.Api.Controllers
 {

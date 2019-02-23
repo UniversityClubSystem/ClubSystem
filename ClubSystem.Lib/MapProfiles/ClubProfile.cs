@@ -1,8 +1,8 @@
-using System.Linq;
 using AutoMapper;
 using ClubSystem.Lib.Models.Dtos;
 using ClubSystem.Lib.Models.Entities;
 using ClubSystem.Lib.Models.Resources;
+using System.Linq;
 
 namespace ClubSystem.Lib.MapProfiles
 {
@@ -24,7 +24,7 @@ namespace ClubSystem.Lib.MapProfiles
                         MediaId = post.MediaId,
                         CreatedDate = post.CreatedDate,
                         LastModifiedDate = post.LastModifiedDate,
-                        Users = post.UserPosts.Select(up => new UserResource {Id = up.UserId}).ToList()
+                        Users = post.UserPosts.Select(up => new UserResource { Id = up.UserId }).ToList()
                     })));
         }
     }

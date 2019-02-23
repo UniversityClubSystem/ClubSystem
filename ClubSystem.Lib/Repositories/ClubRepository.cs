@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using ClubSystem.Lib.Exceptions;
 using ClubSystem.Lib.Interfaces;
 using ClubSystem.Lib.MapProfiles;
@@ -12,6 +8,10 @@ using ClubSystem.Lib.Models.Resources;
 using ClubSystem.Lib.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ClubSystem.Lib.Repositories
 {
@@ -87,7 +87,7 @@ namespace ClubSystem.Lib.Repositories
         {
             var userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var club = await _context.Clubs.FindAsync(addUserToClubDto.ClubId);
-            club.UserClubs.Add(new UserClub {UserId = userId});
+            club.UserClubs.Add(new UserClub { UserId = userId });
             await _context.SaveChangesAsync();
 
             var clubResource = _mapper.Map<ClubResource>(club);
